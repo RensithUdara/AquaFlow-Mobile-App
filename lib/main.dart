@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'controllers/water_tracking_controller.dart';
-import 'controllers/notification_controller.dart';
+
 import 'controllers/history_controller.dart';
+import 'controllers/notification_controller.dart';
 import 'controllers/settings_controller.dart';
-import 'services/storage_service.dart';
+import 'controllers/water_tracking_controller.dart';
 import 'services/notification_service.dart';
+import 'services/storage_service.dart';
 import 'utils/app_constants.dart';
 import 'utils/app_theme.dart';
 import 'views/screens/home_screen.dart';
@@ -13,14 +14,14 @@ import 'views/screens/home_screen.dart';
 void main() async {
   // Ensure Flutter is initialized
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize services
   final storageService = StorageService();
   await storageService.init();
-  
+
   final notificationService = NotificationService();
   await notificationService.init();
-  
+
   runApp(
     MyApp(
       storageService: storageService,
@@ -32,12 +33,12 @@ void main() async {
 class MyApp extends StatelessWidget {
   final StorageService storageService;
   final NotificationService notificationService;
-  
+
   const MyApp({
-    Key? key,
+    super.key,
     required this.storageService,
     required this.notificationService,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,8 @@ class MyApp extends StatelessWidget {
           create: (_) => WaterTrackingController(storageService),
         ),
         ChangeNotifierProvider(
-          create: (_) => NotificationController(notificationService, storageService),
+          create: (_) =>
+              NotificationController(notificationService, storageService),
         ),
         ChangeNotifierProvider(
           create: (_) => HistoryController(storageService),
