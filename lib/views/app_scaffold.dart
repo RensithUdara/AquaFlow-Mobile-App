@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../controllers/settings_controller.dart';
-import 'screens/home_screen.dart';
 import 'screens/add_water_screen.dart';
 import 'screens/history_screen.dart';
+import 'screens/home_screen.dart';
 import 'screens/settings_screen.dart';
 
 /// Main application scaffold with bottom navigation
 class AppScaffold extends StatefulWidget {
-  const AppScaffold({Key? key}) : super(key: key);
+  const AppScaffold({super.key});
 
   @override
   State<AppScaffold> createState() => _AppScaffoldState();
@@ -27,22 +28,22 @@ class _AppScaffoldState extends State<AppScaffold> {
 
   // List of navigation items
   final List<_NavItem> _navItems = [
-    _NavItem(
+    const _NavItem(
       icon: Icons.water_drop,
       selectedIcon: Icons.water_drop,
       label: 'Today',
     ),
-    _NavItem(
+    const _NavItem(
       icon: Icons.add_circle_outline,
       selectedIcon: Icons.add_circle,
       label: 'Add',
     ),
-    _NavItem(
+    const _NavItem(
       icon: Icons.history,
       selectedIcon: Icons.history,
       label: 'History',
     ),
-    _NavItem(
+    const _NavItem(
       icon: Icons.settings_outlined,
       selectedIcon: Icons.settings,
       label: 'Settings',
@@ -53,7 +54,7 @@ class _AppScaffoldState extends State<AppScaffold> {
   Widget build(BuildContext context) {
     final settingsController = context.watch<SettingsController>();
     final isDarkMode = settingsController.isDarkTheme(context);
-    
+
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,
@@ -78,9 +79,7 @@ class _AppScaffoldState extends State<AppScaffold> {
           },
           destinations: _buildNavigationDestinations(isDarkMode),
           height: 65,
-          backgroundColor: isDarkMode 
-              ? Colors.grey[900] 
-              : Colors.white,
+          backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
         ),
       ),
     );
