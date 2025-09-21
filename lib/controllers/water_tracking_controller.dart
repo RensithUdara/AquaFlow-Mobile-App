@@ -1,19 +1,20 @@
 import 'package:flutter/foundation.dart';
-import '../models/water_entry.dart';
+
 import '../models/daily_goal.dart';
+import '../models/water_entry.dart';
 import '../services/storage_service.dart';
 import '../utils/utility_service.dart';
 
 /// Controller for managing water tracking functionality
 class WaterTrackingController with ChangeNotifier {
   final StorageService _storageService;
-  
+
   /// Current day's water entries
   List<WaterEntry> _entries = [];
-  
+
   /// Current day's goal
   DailyGoal? _dailyGoal;
-  
+
   /// Current selected date
   DateTime _selectedDate = DateTime.now();
 
@@ -24,10 +25,10 @@ class WaterTrackingController with ChangeNotifier {
 
   /// Get current water entries
   List<WaterEntry> get entries => List.unmodifiable(_entries);
-  
+
   /// Get current daily goal
   DailyGoal? get dailyGoal => _dailyGoal;
-  
+
   /// Get selected date
   DateTime get selectedDate => _selectedDate;
 
@@ -57,7 +58,7 @@ class WaterTrackingController with ChangeNotifier {
   /// Change the selected date
   void changeSelectedDate(DateTime date) {
     if (UtilityService.isSameDay(_selectedDate, date)) return;
-    
+
     _selectedDate = date;
     _loadData();
     notifyListeners();
@@ -71,46 +72,48 @@ class WaterTrackingController with ChangeNotifier {
       date: _selectedDate,
       isCompleted: totalAmount >= targetAmount,
     );
-    
+
     await _storageService.saveDailyGoal(_dailyGoal!);
     notifyListeners();
   }
 
   /// Add a new water entry
-  Future<void> addWaterEntry(int amount, {String drinkType = 'water', DateTime? timestamp}) async {
+  Future<void> addWaterEntry(int amount,
+      {String drinkType = 'water', DateTime? timestamp}) async {
     final entry = WaterEntry(
       amount: amount,
       timestamp: timestamp ?? DateTime.now(),
       drinkType: drinkType,
     );
-    
+
     _entries.add(entry);
-    
+
     // Update daily goal if it exists
     if (_dailyGoal != null) {
       _dailyGoal = _dailyGoal!.addWater(amount);
       await _storageService.saveDailyGoal(_dailyGoal!);
     }
-    
+
     await _storageService.saveWaterEntries(_selectedDate, _entries);
     notifyListeners();
   }
 
   /// Update an existing water entry
-  Future<void> updateWaterEntry(String id, {int? amount, DateTime? timestamp, String? drinkType}) async {
+  Future<void> updateWaterEntry(String id,
+      {int? amount, DateTime? timestamp, String? drinkType}) async {
     final index = _entries.indexWhere((entry) => entry.id == id);
     if (index == -1) return;
-    
+
     final oldAmount = _entries[index].amount;
-    
+
     final updatedEntry = _entries[index].copyWith(
       amount: amount,
       timestamp: timestamp,
       drinkType: drinkType,
     );
-    
+
     _entries[index] = updatedEntry;
-    
+
     // Update daily goal if it exists and amount changed
     if (_dailyGoal != null && amount != null && amount != oldAmount) {
       final difference = amount - oldAmount;
@@ -121,7 +124,7 @@ class WaterTrackingController with ChangeNotifier {
       }
       await _storageService.saveDailyGoal(_dailyGoal!);
     }
-    
+
     await _storageService.saveWaterEntries(_selectedDate, _entries);
     notifyListeners();
   }
@@ -130,17 +133,17 @@ class WaterTrackingController with ChangeNotifier {
   Future<void> removeWaterEntry(String id) async {
     final index = _entries.indexWhere((entry) => entry.id == id);
     if (index == -1) return;
-    
+
     final removedAmount = _entries[index].amount;
-    
+
     _entries.removeAt(index);
-    
+
     // Update daily goal if it exists
     if (_dailyGoal != null) {
       _dailyGoal = _dailyGoal!.removeWater(removedAmount);
       await _storageService.saveDailyGoal(_dailyGoal!);
     }
-    
+
     await _storageService.saveWaterEntries(_selectedDate, _entries);
     notifyListeners();
   }
