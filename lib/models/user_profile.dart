@@ -11,13 +11,13 @@ enum ActivityLevel {
 class UserProfile {
   /// User's daily water intake goal in milliliters
   final int dailyGoal;
-  
+
   /// User's weight in kilograms
   final double weight;
-  
+
   /// User's activity level
   final ActivityLevel activityLevel;
-  
+
   /// Whether notifications are enabled
   final bool notificationsEnabled;
 
@@ -33,7 +33,7 @@ class UserProfile {
   factory UserProfile.defaultProfile() {
     return UserProfile(
       dailyGoal: 2500, // Default 2.5L
-      weight: 70.0,    // Default 70kg
+      weight: 70.0, // Default 70kg
       activityLevel: ActivityLevel.moderatelyActive,
       notificationsEnabled: true,
     );
@@ -43,7 +43,7 @@ class UserProfile {
   int calculateRecommendedIntake() {
     // Base calculation: 30ml per kg of body weight
     double baseAmount = weight * 30;
-    
+
     // Adjust for activity level
     switch (activityLevel) {
       case ActivityLevel.sedentary:
@@ -57,7 +57,7 @@ class UserProfile {
       case ActivityLevel.extraActive:
         baseAmount *= 1.4;
     }
-    
+
     return baseAmount.round();
   }
 
