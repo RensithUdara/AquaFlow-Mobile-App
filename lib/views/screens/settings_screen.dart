@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../controllers/settings_controller.dart';
+
 import '../../controllers/notification_controller.dart';
+import '../../controllers/settings_controller.dart';
 import '../../models/notification_settings.dart';
 import '../../models/user_profile.dart';
 import '../../utils/app_colors.dart';
@@ -10,7 +11,7 @@ import '../../utils/utility_service.dart';
 
 /// Screen for app settings
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -18,15 +19,15 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final _formKey = GlobalKey<FormState>();
-  
+
   // Form controllers
   late final TextEditingController _dailyGoalController;
   late final TextEditingController _weightController;
-  
+
   @override
   void initState() {
     super.initState();
-    
+
     // Initialize form controllers
     final settingsController = context.read<SettingsController>();
     _dailyGoalController = TextEditingController(
@@ -36,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       text: settingsController.userProfile.weight.toString(),
     );
   }
-  
+
   @override
   void dispose() {
     _dailyGoalController.dispose();
@@ -59,19 +60,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               // Profile settings
               _buildProfileSettings(context),
-              
+
               const SizedBox(height: 24),
-              
+
               // Notification settings
               _buildNotificationSettings(context),
-              
+
               const SizedBox(height: 24),
-              
+
               // App settings
               _buildAppSettings(context),
-              
+
               const SizedBox(height: 32),
-              
+
               // Save button
               Center(
                 child: ElevatedButton.icon(
@@ -97,14 +98,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildProfileSettings(BuildContext context) {
     final settingsController = context.watch<SettingsController>();
     final isDarkMode = settingsController.isDarkTheme(context);
-    
+
     return Card(
       elevation: AppConstants.cardElevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppConstants.borderRadius),
       ),
-      color: isDarkMode 
-          ? AppColors.darkSecondaryBackground 
+      color: isDarkMode
+          ? AppColors.darkSecondaryBackground
           : AppColors.lightSecondaryBackground,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -120,14 +121,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Text(
                     'Profile Settings',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Daily goal
               TextFormField(
                 controller: _dailyGoalController,
@@ -152,9 +153,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   return null;
                 },
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Weight
               TextFormField(
                 controller: _weightController,
@@ -179,14 +180,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   return null;
                 },
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Activity level
               _buildActivityLevelSelector(context, settingsController),
-              
+
               const SizedBox(height: 16),
-              
+
               // Recommended intake
               Container(
                 padding: const EdgeInsets.all(12),
@@ -206,26 +207,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         Text(
                           'Recommended Daily Intake',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                         Text(
                           UtilityService.formatAmount(
                             settingsController.getRecommendedIntake(),
                           ),
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.primaryBlue,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.primaryBlue,
+                                  ),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 8),
-              
+
               Center(
                 child: TextButton.icon(
                   onPressed: _applyRecommendedIntake,
@@ -245,14 +248,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final notificationController = context.watch<NotificationController>();
     final settingsController = context.watch<SettingsController>();
     final isDarkMode = settingsController.isDarkTheme(context);
-    
+
     return Card(
       elevation: AppConstants.cardElevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppConstants.borderRadius),
       ),
-      color: isDarkMode 
-          ? AppColors.darkSecondaryBackground 
+      color: isDarkMode
+          ? AppColors.darkSecondaryBackground
           : AppColors.lightSecondaryBackground,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -266,14 +269,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Text(
                   'Notification Settings',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Enable notifications
             SwitchListTile(
               title: const Text('Enable Notifications'),
@@ -284,9 +287,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
               secondary: const Icon(Icons.notifications_active),
             ),
-            
+
             const Divider(),
-            
+
             // Smart reminders
             SwitchListTile(
               title: const Text('Smart Reminders'),
@@ -299,9 +302,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   : null,
               secondary: const Icon(Icons.auto_awesome),
             ),
-            
+
             const Divider(),
-            
+
             // Scheduled reminders
             ListTile(
               title: const Text('Scheduled Reminders'),
@@ -326,22 +329,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 tooltip: 'Refresh schedule',
               ),
             ),
-            
+
             if (notificationController.isEnabled) ...[
               const SizedBox(height: 8),
-              
+
               // List of reminder times
               ...notificationController.reminderTimes.asMap().entries.map(
-                (entry) => _buildReminderTimeItem(
-                  context,
-                  entry.key,
-                  entry.value,
-                  notificationController,
-                ),
-              ),
-              
+                    (entry) => _buildReminderTimeItem(
+                      context,
+                      entry.key,
+                      entry.value,
+                      notificationController,
+                    ),
+                  ),
+
               const SizedBox(height: 8),
-              
+
               // Add reminder button
               Center(
                 child: OutlinedButton.icon(
@@ -361,14 +364,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildAppSettings(BuildContext context) {
     final settingsController = context.watch<SettingsController>();
     final isDarkMode = settingsController.isDarkTheme(context);
-    
+
     return Card(
       elevation: AppConstants.cardElevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppConstants.borderRadius),
       ),
-      color: isDarkMode 
-          ? AppColors.darkSecondaryBackground 
+      color: isDarkMode
+          ? AppColors.darkSecondaryBackground
           : AppColors.lightSecondaryBackground,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -382,14 +385,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Text(
                   'App Settings',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Theme settings
             ListTile(
               title: const Text('App Theme'),
@@ -398,13 +401,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () => _showThemeSelector(context),
             ),
-            
+
             const Divider(),
-            
+
             // About section
             ListTile(
               title: const Text('About'),
-              subtitle: Text('Version ${AppConstants.appVersion}'),
+              subtitle: const Text('Version ${AppConstants.appVersion}'),
               leading: const Icon(Icons.info),
               onTap: () => _showAboutDialog(context),
             ),
@@ -416,7 +419,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   /// Build activity level selector
   Widget _buildActivityLevelSelector(
-    BuildContext context, 
+    BuildContext context,
     SettingsController settingsController,
   ) {
     return Column(
@@ -431,8 +434,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           spacing: 8,
           runSpacing: 8,
           children: ActivityLevel.values.map((level) {
-            final isSelected = level == settingsController.userProfile.activityLevel;
-            
+            final isSelected =
+                level == settingsController.userProfile.activityLevel;
+
             return ChoiceChip(
               label: Text(_getActivityLevelName(level)),
               selected: isSelected,
@@ -479,7 +483,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    
+
     if (pickedTime != null && context.mounted) {
       final notificationController = context.read<NotificationController>();
       await notificationController.addReminderTime(
@@ -497,9 +501,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   ) async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(hour: reminderTime.hour, minute: reminderTime.minute),
+      initialTime:
+          TimeOfDay(hour: reminderTime.hour, minute: reminderTime.minute),
     );
-    
+
     if (pickedTime != null && context.mounted) {
       final notificationController = context.read<NotificationController>();
       await notificationController.updateReminderTime(
@@ -513,7 +518,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   /// Show dialog to select app theme
   Future<void> _showThemeSelector(BuildContext context) async {
     final settingsController = context.read<SettingsController>();
-    
+
     await showDialog<void>(
       context: context,
       builder: (context) {
@@ -560,16 +565,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('About AquaFlow'),
-          content: Column(
+          content: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 'AquaFlow is a water tracking app that helps you stay hydrated with smart reminders, personalized goals, and simple tracking.',
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Text('Version: ${AppConstants.appVersion}'),
-              const SizedBox(height: 8),
-              const Text('© 2025 AquaFlow'),
+              SizedBox(height: 8),
+              Text('© 2025 AquaFlow'),
             ],
           ),
           actions: [
@@ -587,19 +592,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _saveSettings() async {
     if (_formKey.currentState?.validate() ?? false) {
       final settingsController = context.read<SettingsController>();
-      
+
       // Parse form values
-      final dailyGoal = int.tryParse(_dailyGoalController.text) ?? 
+      final dailyGoal = int.tryParse(_dailyGoalController.text) ??
           settingsController.userProfile.dailyGoal;
-      final weight = double.tryParse(_weightController.text) ?? 
+      final weight = double.tryParse(_weightController.text) ??
           settingsController.userProfile.weight;
-      
+
       // Update profile
       await settingsController.updateUserProfile(
         dailyGoal: dailyGoal,
         weight: weight,
       );
-      
+
       // Show success message
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -617,7 +622,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _applyRecommendedIntake() {
     final settingsController = context.read<SettingsController>();
     final recommendedIntake = settingsController.getRecommendedIntake();
-    
+
     setState(() {
       _dailyGoalController.text = recommendedIntake.toString();
     });
