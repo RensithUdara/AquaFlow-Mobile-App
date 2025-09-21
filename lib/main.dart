@@ -9,7 +9,7 @@ import 'services/notification_service.dart';
 import 'services/storage_service.dart';
 import 'utils/app_constants.dart';
 import 'utils/app_theme.dart';
-import 'views/screens/home_screen.dart';
+import 'views/app_scaffold.dart';
 
 void main() async {
   // Ensure Flutter is initialized
@@ -66,7 +66,8 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.getLightTheme(),
             darkTheme: AppTheme.getDarkTheme(),
             themeMode: settingsController.themeMode,
-            home: const HomeScreen(),
+            home: const AppScaffold(),
+            debugShowCheckedModeBanner: false,
           );
         },
       ),
