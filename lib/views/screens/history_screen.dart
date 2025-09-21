@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../controllers/history_controller.dart';
 import '../../controllers/settings_controller.dart';
 import '../../utils/app_colors.dart';
@@ -8,14 +9,14 @@ import '../../utils/utility_service.dart';
 
 /// Screen for viewing water intake history
 class HistoryScreen extends StatelessWidget {
-  const HistoryScreen({Key? key}) : super(key: key);
+  const HistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final historyController = context.watch<HistoryController>();
     final settingsController = context.watch<SettingsController>();
     final isDarkMode = settingsController.isDarkTheme(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('History'),
@@ -27,14 +28,14 @@ class HistoryScreen extends StatelessWidget {
           children: [
             // Date range selector
             _buildDateRangeSelector(context, historyController, isDarkMode),
-            
+
             const SizedBox(height: 16),
-            
+
             // Statistics summary
             _buildStatisticsSummary(context, historyController, isDarkMode),
-            
+
             const SizedBox(height: 16),
-            
+
             // Date entries list
             Expanded(
               child: _buildHistoryList(context, historyController, isDarkMode),
@@ -47,7 +48,7 @@ class HistoryScreen extends StatelessWidget {
 
   /// Build date range selector
   Widget _buildDateRangeSelector(
-    BuildContext context, 
+    BuildContext context,
     HistoryController historyController,
     bool isDarkMode,
   ) {
@@ -56,8 +57,8 @@ class HistoryScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppConstants.borderRadius),
       ),
-      color: isDarkMode 
-          ? AppColors.darkSecondaryBackground 
+      color: isDarkMode
+          ? AppColors.darkSecondaryBackground
           : AppColors.lightSecondaryBackground,
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -82,34 +83,34 @@ class HistoryScreen extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 8),
-            
+
             // Range selector chips
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildRangeChip(
-                  context, 
-                  'Day', 
+                  context,
+                  'Day',
                   historyController.currentRange == DateRange.day,
                   () => historyController.changeRange(DateRange.day),
                 ),
                 _buildRangeChip(
-                  context, 
-                  'Week', 
+                  context,
+                  'Week',
                   historyController.currentRange == DateRange.week,
                   () => historyController.changeRange(DateRange.week),
                 ),
                 _buildRangeChip(
-                  context, 
-                  'Month', 
+                  context,
+                  'Month',
                   historyController.currentRange == DateRange.month,
                   () => historyController.changeRange(DateRange.month),
                 ),
                 _buildRangeChip(
-                  context, 
-                  'Year', 
+                  context,
+                  'Year',
                   historyController.currentRange == DateRange.year,
                   () => historyController.changeRange(DateRange.year),
                 ),
@@ -123,19 +124,19 @@ class HistoryScreen extends StatelessWidget {
 
   /// Build statistics summary card
   Widget _buildStatisticsSummary(
-    BuildContext context, 
+    BuildContext context,
     HistoryController historyController,
     bool isDarkMode,
   ) {
     final stats = historyController.getStatistics();
-    
+
     return Card(
       elevation: AppConstants.cardElevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppConstants.borderRadius),
       ),
-      color: isDarkMode 
-          ? AppColors.darkSecondaryBackground 
+      color: isDarkMode
+          ? AppColors.darkSecondaryBackground
           : AppColors.lightSecondaryBackground,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -145,12 +146,12 @@ class HistoryScreen extends StatelessWidget {
             Text(
               'Statistics',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             // Stats grid
             Row(
               children: [
@@ -170,9 +171,9 @@ class HistoryScreen extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             Row(
               children: [
                 _buildStatItem(
@@ -191,7 +192,7 @@ class HistoryScreen extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             if (stats.bestDay != null) ...[
               const SizedBox(height: 12),
               Text(
@@ -207,19 +208,19 @@ class HistoryScreen extends StatelessWidget {
 
   /// Build history list
   Widget _buildHistoryList(
-    BuildContext context, 
+    BuildContext context,
     HistoryController historyController,
     bool isDarkMode,
   ) {
     final dates = historyController.datesInRange;
-    
+
     return Card(
       elevation: AppConstants.cardElevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppConstants.borderRadius),
       ),
-      color: isDarkMode 
-          ? AppColors.darkSecondaryBackground 
+      color: isDarkMode
+          ? AppColors.darkSecondaryBackground
           : AppColors.lightSecondaryBackground,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -229,12 +230,10 @@ class HistoryScreen extends StatelessWidget {
             Text(
               'History',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
-            
             const SizedBox(height: 12),
-            
             Expanded(
               child: dates.isEmpty
                   ? _buildEmptyState(context)
@@ -272,15 +271,15 @@ class HistoryScreen extends StatelessWidget {
           Text(
             'No history data available',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppColors.neutralGray,
-            ),
+                  color: AppColors.neutralGray,
+                ),
           ),
           const SizedBox(height: 8),
           Text(
             'Start tracking your water intake!',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.neutralGray,
-            ),
+                  color: AppColors.neutralGray,
+                ),
           ),
         ],
       ),
@@ -297,22 +296,20 @@ class HistoryScreen extends StatelessWidget {
     final amount = historyController.getAmountForDate(date);
     final progress = historyController.getProgressForDate(date);
     final isCompleted = historyController.isGoalCompletedForDate(date);
-    
+
     Color progressColor;
     if (isCompleted) {
-      progressColor = isDarkMode 
-          ? AppColors.darkGoalAchieved 
-          : AppColors.lightGoalAchieved;
+      progressColor =
+          isDarkMode ? AppColors.darkGoalAchieved : AppColors.lightGoalAchieved;
     } else if (progress > 0) {
-      progressColor = isDarkMode 
-          ? AppColors.darkGoalPartial 
-          : AppColors.lightGoalPartial;
+      progressColor =
+          isDarkMode ? AppColors.darkGoalPartial : AppColors.lightGoalPartial;
     } else {
-      progressColor = isDarkMode 
-          ? AppColors.darkGoalNotStarted 
+      progressColor = isDarkMode
+          ? AppColors.darkGoalNotStarted
           : AppColors.lightGoalNotStarted;
     }
-    
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: ListTile(
@@ -320,8 +317,8 @@ class HistoryScreen extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
           side: BorderSide(
-            color: isDarkMode 
-                ? AppColors.darkHintText.withOpacity(0.3) 
+            color: isDarkMode
+                ? AppColors.darkHintText.withOpacity(0.3)
                 : AppColors.lightHintText.withOpacity(0.3),
             width: 1,
           ),
@@ -336,8 +333,8 @@ class HistoryScreen extends StatelessWidget {
             const SizedBox(height: 4),
             LinearProgressIndicator(
               value: progress,
-              backgroundColor: isDarkMode 
-                  ? AppColors.darkProgressBackground 
+              backgroundColor: isDarkMode
+                  ? AppColors.darkProgressBackground
                   : AppColors.lightProgressBackground,
               valueColor: AlwaysStoppedAnimation<Color>(progressColor),
               minHeight: 8,
@@ -345,17 +342,13 @@ class HistoryScreen extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              amount > 0
-                  ? UtilityService.formatAmount(amount)
-                  : 'No data',
+              amount > 0 ? UtilityService.formatAmount(amount) : 'No data',
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
         ),
         trailing: Icon(
-          isCompleted 
-              ? Icons.check_circle 
-              : Icons.water_drop_outlined,
+          isCompleted ? Icons.check_circle : Icons.water_drop_outlined,
           color: progressColor,
         ),
       ),
@@ -366,7 +359,7 @@ class HistoryScreen extends StatelessWidget {
   Widget _buildRangeTitle(BuildContext context, HistoryController controller) {
     final date = controller.referenceDate;
     String title;
-    
+
     switch (controller.currentRange) {
       case DateRange.day:
         title = UtilityService.formatDate(date);
@@ -374,7 +367,8 @@ class HistoryScreen extends StatelessWidget {
       case DateRange.week:
         final weekStart = UtilityService.startOfWeek(date);
         final weekEnd = UtilityService.endOfWeek(date);
-        title = '${UtilityService.formatDate(weekStart, format: 'MMM d')} - ${UtilityService.formatDate(weekEnd, format: 'MMM d, yyyy')}';
+        title =
+            '${UtilityService.formatDate(weekStart, format: 'MMM d')} - ${UtilityService.formatDate(weekEnd, format: 'MMM d, yyyy')}';
         break;
       case DateRange.month:
         title = UtilityService.formatDate(date, format: 'MMMM yyyy');
@@ -383,7 +377,7 @@ class HistoryScreen extends StatelessWidget {
         title = UtilityService.formatDate(date, format: 'yyyy');
         break;
     }
-    
+
     return Text(
       title,
       style: Theme.of(context).textTheme.titleMedium,
@@ -392,8 +386,8 @@ class HistoryScreen extends StatelessWidget {
 
   /// Build a chip for range selection
   Widget _buildRangeChip(
-    BuildContext context, 
-    String label, 
+    BuildContext context,
+    String label,
     bool isSelected,
     VoidCallback onTap,
   ) {
@@ -403,8 +397,8 @@ class HistoryScreen extends StatelessWidget {
       onSelected: (selected) {
         if (selected) onTap();
       },
-      backgroundColor: Theme.of(context).brightness == Brightness.dark 
-          ? AppColors.darkSurfaceBackground 
+      backgroundColor: Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkSurfaceBackground
           : AppColors.lightSurfaceBackground,
     );
   }
@@ -439,16 +433,16 @@ class HistoryScreen extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).brightness == Brightness.dark 
-                      ? AppColors.darkSecondaryText 
-                      : AppColors.lightSecondaryText,
-                ),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.darkSecondaryText
+                          : AppColors.lightSecondaryText,
+                    ),
               ),
               Text(
                 value,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             ],
           ),
@@ -461,7 +455,7 @@ class HistoryScreen extends StatelessWidget {
   bool _canGoForward(HistoryController controller) {
     final now = DateTime.now();
     final current = controller.referenceDate;
-    
+
     switch (controller.currentRange) {
       case DateRange.day:
         return current.isBefore(DateTime(now.year, now.month, now.day));
@@ -470,7 +464,7 @@ class HistoryScreen extends StatelessWidget {
         final nowWeekStart = UtilityService.startOfWeek(now);
         return currentWeekStart.isBefore(nowWeekStart);
       case DateRange.month:
-        return current.year < now.year || 
+        return current.year < now.year ||
             (current.year == now.year && current.month < now.month);
       case DateRange.year:
         return current.year < now.year;
