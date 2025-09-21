@@ -4,13 +4,13 @@ import 'package:uuid/uuid.dart';
 class WaterEntry {
   /// Unique identifier for the water entry
   final String id;
-  
+
   /// Amount of water consumed in milliliters
   final int amount;
-  
+
   /// Timestamp when the water was consumed
   final DateTime timestamp;
-  
+
   /// Type of drink (water, tea, coffee, etc.)
   final String drinkType;
 
