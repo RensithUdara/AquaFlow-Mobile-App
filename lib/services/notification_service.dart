@@ -1,47 +1,50 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz_data;
 import 'dart:math';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz_data;
+import 'package:timezone/timezone.dart' as tz;
+
 import '../models/notification_settings.dart';
 import '../utils/app_constants.dart';
 
 /// Service for managing app notifications
 class NotificationService {
-  final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
-  
+  final FlutterLocalNotificationsPlugin _notificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
   /// Initialize the notification service
   Future<void> init() async {
     // Initialize timezone data
     tz_data.initializeTimeZones();
-    
+
     // Initialize Android settings
-    const AndroidInitializationSettings androidSettings = 
+    const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
-    
+
     // Initialize iOS settings
-    const DarwinInitializationSettings iOSSettings = 
+    const DarwinInitializationSettings iOSSettings =
         DarwinInitializationSettings(
-          requestAlertPermission: true,
-          requestBadgePermission: true,
-          requestSoundPermission: true,
-        );
-    
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
+
     // Initialize settings for all platforms
     const InitializationSettings initSettings = InitializationSettings(
       android: androidSettings,
       iOS: iOSSettings,
     );
-    
+
     // Initialize notifications plugin
     await _notificationsPlugin.initialize(
       initSettings,
       onDidReceiveNotificationResponse: _onNotificationTapped,
     );
-    
+
     // Create the notification channel for Android
     await _createNotificationChannel();
   }
-  
+
   /// Create the notification channel for Android
   Future<void> _createNotificationChannel() async {
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -50,33 +53,37 @@ class NotificationService {
       description: AppConstants.reminderChannelDescription,
       importance: Importance.high,
     );
-    
+
     await _notificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
   }
-  
+
   /// Request notification permissions
   Future<bool> requestPermissions() async {
     // Request permissions for iOS
     final bool? result = await _notificationsPlugin
-        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
           alert: true,
           badge: true,
           sound: true,
         );
-    
+
     return result ?? false;
   }
-  
+
   /// Schedule a water reminder notification
-  Future<void> scheduleReminder(DateTime scheduledTime, {String? customMessage}) async {
+  Future<void> scheduleReminder(DateTime scheduledTime,
+      {String? customMessage}) async {
     final int notificationId = Random().nextInt(100000);
-    final String title = 'Hydration Reminder';
+    const String title = 'Hydration Reminder';
     final String body = customMessage ?? _getRandomReminderMessage();
-    
-    final AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+
+    final AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
       AppConstants.reminderChannelId,
       AppConstants.reminderChannelName,
       channelDescription: AppConstants.reminderChannelDescription,
@@ -84,18 +91,18 @@ class NotificationService {
       priority: Priority.high,
       icon: '@mipmap/ic_launcher',
     );
-    
+
     final DarwinNotificationDetails iOSDetails = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
     );
-    
+
     final NotificationDetails notificationDetails = NotificationDetails(
       android: androidDetails,
       iOS: iOSDetails,
     );
-    
+
     await _notificationsPlugin.zonedSchedule(
       notificationId,
       title,
@@ -103,32 +110,34 @@ class NotificationService {
       tz.TZDateTime.from(scheduledTime, tz.local),
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation: 
+      uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
-  
+
   /// Schedule multiple reminders based on notification settings
-  Future<void> scheduleRemindersForDay(NotificationSettings settings, DateTime date) async {
+  Future<void> scheduleRemindersForDay(
+      NotificationSettings settings, DateTime date) async {
     // Cancel any existing scheduled reminders
     await cancelAllReminders();
-    
+
     // Skip if notifications are not enabled
     if (!settings.isEnabled) return;
-    
+
     // Get reminder schedule for the day
-    final List<DateTime> reminderTimes = settings.generateReminderSchedule(date);
-    
+    final List<DateTime> reminderTimes =
+        settings.generateReminderSchedule(date);
+
     // Schedule each reminder
     for (final reminderTime in reminderTimes) {
       // Skip quiet hours
       if (settings.isQuietHours(reminderTime)) continue;
-      
+
       await scheduleReminder(reminderTime);
     }
   }
-  
+
   /// Generate a smart reminder based on activity and time of day
   Future<void> scheduleSmartReminder(
     NotificationSettings settings,
@@ -138,10 +147,10 @@ class NotificationService {
   ) async {
     // Skip if notifications or smart reminders are not enabled
     if (!settings.isEnabled || !settings.smartRemindersEnabled) return;
-    
+
     final now = DateTime.now();
     final progress = currentIntake / targetIntake;
-    
+
     // Early morning reminder (8-10 AM)
     if (now.hour >= 8 && now.hour < 10 && progress < 0.1) {
       await scheduleReminder(
@@ -185,12 +194,13 @@ class NotificationService {
       );
     }
   }
-  
+
   /// Send an immediate notification
   Future<void> showNotification(String title, String body) async {
     final int notificationId = Random().nextInt(100000);
-    
-    final AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+
+    final AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
       AppConstants.reminderChannelId,
       AppConstants.reminderChannelName,
       channelDescription: AppConstants.reminderChannelDescription,
@@ -198,18 +208,18 @@ class NotificationService {
       priority: Priority.high,
       icon: '@mipmap/ic_launcher',
     );
-    
+
     final DarwinNotificationDetails iOSDetails = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
     );
-    
+
     final NotificationDetails notificationDetails = NotificationDetails(
       android: androidDetails,
       iOS: iOSDetails,
     );
-    
+
     await _notificationsPlugin.show(
       notificationId,
       title,
@@ -217,18 +227,18 @@ class NotificationService {
       notificationDetails,
     );
   }
-  
+
   /// Cancel all scheduled reminders
   Future<void> cancelAllReminders() async {
     await _notificationsPlugin.cancelAll();
   }
-  
+
   /// Handle notification tap
   void _onNotificationTapped(NotificationResponse response) {
     // Handle notification tap
     // This can be used to navigate to specific screens when user taps on notification
   }
-  
+
   /// Get a random reminder message
   String _getRandomReminderMessage() {
     final List<String> messages = [
@@ -243,7 +253,7 @@ class NotificationService {
       'Refill your water bottle! 🚰',
       'Drink up! Your body will thank you! 💧',
     ];
-    
+
     return messages[Random().nextInt(messages.length)];
   }
 }
