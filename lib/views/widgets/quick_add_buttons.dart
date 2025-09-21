@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../utils/app_constants.dart';
+
 import '../../utils/app_colors.dart';
+import '../../utils/app_constants.dart';
 
 /// Widget for quick water add buttons
 class QuickAddButtons extends StatelessWidget {
@@ -9,9 +10,9 @@ class QuickAddButtons extends StatelessWidget {
 
   /// Constructor for quick add buttons widget
   const QuickAddButtons({
-    Key? key,
+    super.key,
     required this.onAmountSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +47,8 @@ class QuickAddButtons extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: isDarkMode 
-              ? AppColors.darkSurfaceBackground 
+          color: isDarkMode
+              ? AppColors.darkSurfaceBackground
               : AppColors.lightSurfaceBackground,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
@@ -60,17 +61,17 @@ class QuickAddButtons extends StatelessWidget {
             Text(
               '$amount',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryBlue,
-              ),
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primaryBlue,
+                  ),
             ),
             Text(
               'ml',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: isDarkMode 
-                    ? AppColors.darkSecondaryText 
-                    : AppColors.lightSecondaryText,
-              ),
+                    color: isDarkMode
+                        ? AppColors.darkSecondaryText
+                        : AppColors.lightSecondaryText,
+                  ),
             ),
           ],
         ),
