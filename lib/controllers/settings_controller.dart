@@ -1,15 +1,15 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import '../models/user_profile.dart';
 import '../services/storage_service.dart';
 
 /// Controller for managing app settings and user profile
 class SettingsController with ChangeNotifier {
   final StorageService _storageService;
-  
+
   /// User profile data
   late UserProfile _userProfile;
-  
+
   /// Theme mode (light, dark, system)
   ThemeMode _themeMode = ThemeMode.system;
 
@@ -20,10 +20,10 @@ class SettingsController with ChangeNotifier {
 
   /// Get current user profile
   UserProfile get userProfile => _userProfile;
-  
+
   /// Get current theme mode
   ThemeMode get themeMode => _themeMode;
-  
+
   /// Check if dark theme is active (used for UI rendering decisions)
   bool isDarkTheme(BuildContext context) {
     switch (_themeMode) {
@@ -50,7 +50,7 @@ class SettingsController with ChangeNotifier {
       activityLevel: activityLevel,
       notificationsEnabled: notificationsEnabled,
     );
-    
+
     await _storageService.saveUserProfile(_userProfile);
     notifyListeners();
   }
@@ -63,7 +63,7 @@ class SettingsController with ChangeNotifier {
   /// Set theme mode
   Future<void> setThemeMode(ThemeMode mode) async {
     _themeMode = mode;
-    
+
     // Save theme preference
     bool? isDark;
     if (mode == ThemeMode.dark) {
@@ -71,11 +71,11 @@ class SettingsController with ChangeNotifier {
     } else if (mode == ThemeMode.light) {
       isDark = false;
     }
-    
+
     if (isDark != null) {
       await _storageService.saveThemePreference(isDark);
     }
-    
+
     notifyListeners();
   }
 
@@ -83,7 +83,7 @@ class SettingsController with ChangeNotifier {
   void _loadSettings() {
     // Load user profile
     _userProfile = _storageService.getUserProfile();
-    
+
     // Load theme preference
     final isDark = _storageService.getThemePreference();
     if (isDark != null) {
