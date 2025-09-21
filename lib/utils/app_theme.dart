@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 
 /// Class containing all the app text styles
@@ -85,13 +86,11 @@ class AppTheme {
   static ThemeData getLightTheme() {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme(
+      colorScheme: const ColorScheme(
         primary: AppColors.primaryBlue,
         onPrimary: Colors.white,
         secondary: AppColors.aquaBlue,
         onSecondary: Colors.white,
-        background: AppColors.lightBackground,
-        onBackground: AppColors.lightPrimaryText,
         surface: AppColors.lightSurfaceBackground,
         onSurface: AppColors.lightPrimaryText,
         error: AppColors.errorRed,
@@ -115,7 +114,8 @@ class AppTheme {
           foregroundColor: Colors.white,
           elevation: 2,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -123,14 +123,16 @@ class AppTheme {
           foregroundColor: AppColors.primaryBlue,
           side: const BorderSide(color: AppColors.primaryBlue),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primaryBlue,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
       iconTheme: const IconThemeData(
@@ -156,7 +158,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.errorRed),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       sliderTheme: SliderThemeData(
         activeTrackColor: AppColors.primaryBlue,
@@ -172,8 +175,10 @@ class AppTheme {
         unselectedItemColor: AppColors.lightSecondaryText,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-        unselectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        selectedLabelStyle:
+            TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        unselectedLabelStyle:
+            TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -182,13 +187,11 @@ class AppTheme {
   static ThemeData getDarkTheme() {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme(
+      colorScheme: const ColorScheme(
         primary: AppColors.lightBlue,
         onPrimary: AppColors.darkInverseText,
         secondary: AppColors.aquaBlue,
         onSecondary: AppColors.darkInverseText,
-        background: AppColors.darkBackground,
-        onBackground: AppColors.darkPrimaryText,
         surface: AppColors.darkSurfaceBackground,
         onSurface: AppColors.darkPrimaryText,
         error: AppColors.errorRed,
@@ -212,7 +215,8 @@ class AppTheme {
           foregroundColor: AppColors.darkInverseText,
           elevation: 2,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -220,14 +224,16 @@ class AppTheme {
           foregroundColor: AppColors.lightBlue,
           side: const BorderSide(color: AppColors.lightBlue),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.lightBlue,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
       iconTheme: const IconThemeData(
@@ -253,7 +259,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.errorRed),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       sliderTheme: SliderThemeData(
         activeTrackColor: AppColors.lightBlue,
@@ -269,8 +276,10 @@ class AppTheme {
         unselectedItemColor: AppColors.darkSecondaryText,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-        unselectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        selectedLabelStyle:
+            TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+        unselectedLabelStyle:
+            TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
       ),
     );
   }
