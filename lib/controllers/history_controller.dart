@@ -1,22 +1,23 @@
 import 'package:flutter/foundation.dart';
-import '../models/water_entry.dart';
+
 import '../models/daily_goal.dart';
+import '../models/water_entry.dart';
 import '../services/storage_service.dart';
 import '../utils/utility_service.dart';
 
 /// Controller for managing water intake history
 class HistoryController with ChangeNotifier {
   final StorageService _storageService;
-  
+
   /// Currently viewed date range
   DateRange _currentRange = DateRange.week;
-  
+
   /// Reference date for the current range (usually today)
   DateTime _referenceDate = DateTime.now();
-  
+
   /// Map of dates to water entries
   Map<DateTime, List<WaterEntry>> _entriesByDate = {};
-  
+
   /// Map of dates to daily goals
   Map<DateTime, DailyGoal?> _goalsByDate = {};
 
@@ -27,13 +28,14 @@ class HistoryController with ChangeNotifier {
 
   /// Get current date range type
   DateRange get currentRange => _currentRange;
-  
+
   /// Get reference date
   DateTime get referenceDate => _referenceDate;
-  
+
   /// Get all entries by date
-  Map<DateTime, List<WaterEntry>> get entriesByDate => Map.unmodifiable(_entriesByDate);
-  
+  Map<DateTime, List<WaterEntry>> get entriesByDate =>
+      Map.unmodifiable(_entriesByDate);
+
   /// Get all goals by date
   Map<DateTime, DailyGoal?> get goalsByDate => Map.unmodifiable(_goalsByDate);
 
@@ -47,9 +49,8 @@ class HistoryController with ChangeNotifier {
       case DateRange.month:
         return UtilityService.datesOfMonth(_referenceDate);
       case DateRange.year:
-        return List.generate(12, (index) => 
-          DateTime(_referenceDate.year, index + 1, 1)
-        );
+        return List.generate(
+            12, (index) => DateTime(_referenceDate.year, index + 1, 1));
     }
   }
 
@@ -65,7 +66,7 @@ class HistoryController with ChangeNotifier {
     final dateKey = UtilityService.startOfDay(date);
     final goal = _goalsByDate[dateKey];
     if (goal == null || goal.targetAmount <= 0) return 0.0;
-    
+
     final amount = getAmountForDate(date);
     return (amount / goal.targetAmount).clamp(0.0, 1.0);
   }
@@ -75,7 +76,7 @@ class HistoryController with ChangeNotifier {
     final dateKey = UtilityService.startOfDay(date);
     final goal = _goalsByDate[dateKey];
     if (goal == null) return false;
-    
+
     final amount = getAmountForDate(date);
     return amount >= goal.targetAmount;
   }
@@ -83,39 +84,41 @@ class HistoryController with ChangeNotifier {
   /// Get statistics for the current range
   HistoryStatistics getStatistics() {
     final dates = datesInRange;
-    
+
     // Calculate total intake
     int totalIntake = 0;
     int daysTracked = 0;
     int daysCompleted = 0;
     int highestAmount = 0;
     DateTime? bestDay;
-    
+
     for (final date in dates) {
       final dateKey = UtilityService.startOfDay(date);
       final amount = getAmountForDate(date);
-      
+
       if (amount > 0) {
         totalIntake += amount;
         daysTracked++;
       }
-      
+
       if (isGoalCompletedForDate(date)) {
         daysCompleted++;
       }
-      
+
       if (amount > highestAmount) {
         highestAmount = amount;
         bestDay = date;
       }
     }
-    
+
     // Calculate average intake for tracked days
-    final averageIntake = daysTracked > 0 ? (totalIntake / daysTracked).round() : 0;
-    
+    final averageIntake =
+        daysTracked > 0 ? (totalIntake / daysTracked).round() : 0;
+
     // Calculate completion rate
-    final completionRate = daysTracked > 0 ? (daysCompleted / daysTracked) : 0.0;
-    
+    final completionRate =
+        daysTracked > 0 ? (daysCompleted / daysTracked) : 0.0;
+
     return HistoryStatistics(
       totalIntake: totalIntake,
       averageIntake: averageIntake,
@@ -133,7 +136,7 @@ class HistoryController with ChangeNotifier {
     if (referenceDate != null) {
       _referenceDate = referenceDate;
     }
-    
+
     _loadHistory();
     notifyListeners();
   }
@@ -162,7 +165,7 @@ class HistoryController with ChangeNotifier {
         );
         break;
     }
-    
+
     _loadHistory();
     notifyListeners();
   }
@@ -191,7 +194,7 @@ class HistoryController with ChangeNotifier {
         );
         break;
     }
-    
+
     _loadHistory();
     notifyListeners();
   }
@@ -207,15 +210,15 @@ class HistoryController with ChangeNotifier {
   Future<void> _loadHistory() async {
     _entriesByDate = {};
     _goalsByDate = {};
-    
+
     final dates = datesInRange;
-    
+
     for (final date in dates) {
       final dateKey = UtilityService.startOfDay(date);
-      
+
       final entries = _storageService.getWaterEntries(date);
       final goal = _storageService.getDailyGoal(date);
-      
+
       _entriesByDate[dateKey] = entries;
       _goalsByDate[dateKey] = goal;
     }
@@ -234,22 +237,22 @@ enum DateRange {
 class HistoryStatistics {
   /// Total water intake in milliliters
   final int totalIntake;
-  
+
   /// Average daily intake in milliliters
   final int averageIntake;
-  
+
   /// Number of days with tracked data
   final int daysTracked;
-  
+
   /// Number of days with completed goals
   final int daysCompleted;
-  
+
   /// Rate of goal completion (0.0 - 1.0)
   final double completionRate;
-  
+
   /// Highest daily amount in milliliters
   final int highestAmount;
-  
+
   /// Best day (day with highest amount)
   final DateTime? bestDay;
 
