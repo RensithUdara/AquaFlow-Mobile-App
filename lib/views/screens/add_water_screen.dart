@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../controllers/water_tracking_controller.dart';
+
 import '../../controllers/notification_controller.dart';
 import '../../controllers/settings_controller.dart';
+import '../../controllers/water_tracking_controller.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/utility_service.dart';
 
 /// Screen for adding water entries
 class AddWaterScreen extends StatefulWidget {
-  const AddWaterScreen({Key? key}) : super(key: key);
+  const AddWaterScreen({super.key});
 
   @override
   State<AddWaterScreen> createState() => _AddWaterScreenState();
@@ -50,29 +51,29 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
             children: [
               // Water container visualization
               _buildWaterVisualization(context),
-              
+
               const SizedBox(height: 24),
-              
+
               // Amount slider
               _buildAmountSlider(context, isDarkMode),
-              
+
               const SizedBox(height: 24),
-              
+
               // Quick amount buttons
               _buildQuickAmountButtons(context, isDarkMode),
-              
+
               const SizedBox(height: 24),
-              
+
               // Drink type selector
               _buildDrinkTypeSelector(context, isDarkMode),
-              
+
               const SizedBox(height: 24),
-              
+
               // Time selector
               _buildTimeSelector(context, isDarkMode),
-              
+
               const SizedBox(height: 32),
-              
+
               // Add button
               ElevatedButton.icon(
                 onPressed: _addWater,
@@ -107,7 +108,7 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: Theme.of(context).brightness == Brightness.dark 
+                color: Theme.of(context).brightness == Brightness.dark
                     ? AppColors.glassBorderDark
                     : AppColors.glassBorder,
                 width: 2,
@@ -115,7 +116,7 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
               color: Colors.transparent,
             ),
           ),
-          
+
           // Water fill
           AnimatedContainer(
             duration: AppConstants.mediumAnimationDuration,
@@ -129,7 +130,7 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
               color: _getDrinkColor(),
             ),
           ),
-          
+
           // Amount text
           Positioned(
             bottom: 10,
@@ -142,8 +143,8 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
               child: Text(
                 '$_selectedAmount ${AppConstants.mlUnit}',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             ),
           ),
@@ -180,18 +181,18 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
             Text(
               '50 ${AppConstants.mlUnit}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: isDarkMode 
-                    ? AppColors.darkSecondaryText 
-                    : AppColors.lightSecondaryText,
-              ),
+                    color: isDarkMode
+                        ? AppColors.darkSecondaryText
+                        : AppColors.lightSecondaryText,
+                  ),
             ),
             Text(
               '1000 ${AppConstants.mlUnit}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: isDarkMode 
-                    ? AppColors.darkSecondaryText 
-                    : AppColors.lightSecondaryText,
-              ),
+                    color: isDarkMode
+                        ? AppColors.darkSecondaryText
+                        : AppColors.lightSecondaryText,
+                  ),
             ),
           ],
         ),
@@ -221,19 +222,20 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
               },
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   color: _selectedAmount == amount
                       ? _getDrinkColor().withOpacity(0.2)
-                      : isDarkMode 
-                          ? AppColors.darkSurfaceBackground 
+                      : isDarkMode
+                          ? AppColors.darkSurfaceBackground
                           : AppColors.lightSurfaceBackground,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: _selectedAmount == amount
                         ? _getDrinkColor()
-                        : isDarkMode 
-                            ? AppColors.darkHintText 
+                        : isDarkMode
+                            ? AppColors.darkHintText
                             : AppColors.lightHintText,
                     width: 1,
                   ),
@@ -241,11 +243,11 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
                 child: Text(
                   '$amount ${AppConstants.mlUnit}',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: _selectedAmount == amount ? FontWeight.bold : null,
-                    color: _selectedAmount == amount
-                        ? _getDrinkColor()
-                        : null,
-                  ),
+                        fontWeight:
+                            _selectedAmount == amount ? FontWeight.bold : null,
+                        color:
+                            _selectedAmount == amount ? _getDrinkColor() : null,
+                      ),
                 ),
               ),
             );
@@ -270,7 +272,7 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
           runSpacing: 16,
           children: _drinkTypes.map((drinkType) {
             final isSelected = _selectedDrinkType == drinkType['name'];
-            
+
             return InkWell(
               onTap: () {
                 setState(() {
@@ -285,15 +287,15 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
                     decoration: BoxDecoration(
                       color: isSelected
                           ? drinkType['color'].withOpacity(0.2)
-                          : isDarkMode 
-                              ? AppColors.darkSurfaceBackground 
+                          : isDarkMode
+                              ? AppColors.darkSurfaceBackground
                               : AppColors.lightSurfaceBackground,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: isSelected
                             ? drinkType['color']
-                            : isDarkMode 
-                                ? AppColors.darkHintText 
+                            : isDarkMode
+                                ? AppColors.darkHintText
                                 : AppColors.lightHintText,
                         width: 2,
                       ),
@@ -308,9 +310,9 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
                   Text(
                     drinkType['name'].toString().toUpperCase(),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: isSelected ? FontWeight.bold : null,
-                      color: isSelected ? drinkType['color'] : null,
-                    ),
+                          fontWeight: isSelected ? FontWeight.bold : null,
+                          color: isSelected ? drinkType['color'] : null,
+                        ),
                   ),
                 ],
               ),
@@ -336,13 +338,13 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: isDarkMode 
-                  ? AppColors.darkSurfaceBackground 
+              color: isDarkMode
+                  ? AppColors.darkSurfaceBackground
                   : AppColors.lightSurfaceBackground,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: isDarkMode 
-                    ? AppColors.darkHintText 
+                color: isDarkMode
+                    ? AppColors.darkHintText
                     : AppColors.lightHintText,
                 width: 1,
               ),
@@ -354,8 +356,8 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
                   children: [
                     Icon(
                       Icons.access_time,
-                      color: isDarkMode 
-                          ? AppColors.darkSecondaryText 
+                      color: isDarkMode
+                          ? AppColors.darkSecondaryText
                           : AppColors.lightSecondaryText,
                     ),
                     const SizedBox(width: 8),
@@ -368,9 +370,9 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
                 Text(
                   'Change',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ],
             ),
@@ -386,7 +388,7 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
       context: context,
       initialTime: TimeOfDay.fromDateTime(_selectedTime),
     );
-    
+
     if (pickedTime != null) {
       setState(() {
         _selectedTime = DateTime(
@@ -403,23 +405,23 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
   /// Add water entry and navigate back
   void _addWater() {
     final waterController = context.read<WaterTrackingController>();
-    
+
     waterController.addWaterEntry(
       _selectedAmount,
       drinkType: _selectedDrinkType,
       timestamp: _selectedTime,
     );
-    
+
     // Schedule smart reminder if needed
     final notificationController = context.read<NotificationController>();
     if (notificationController.smartRemindersEnabled) {
       notificationController.scheduleSmartReminder(
         waterController.totalAmount,
-        waterController.dailyGoal?.targetAmount ?? 
+        waterController.dailyGoal?.targetAmount ??
             context.read<SettingsController>().userProfile.dailyGoal,
       );
     }
-    
+
     // Show success message and go back
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -428,7 +430,7 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
         behavior: SnackBarBehavior.floating,
       ),
     );
-    
+
     Navigator.pop(context);
   }
 
