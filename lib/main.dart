@@ -1,37 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'controllers/water_tracking_controller.dart';
+import 'controllers/notification_controller.dart';
+import 'controllers/history_controller.dart';
+import 'controllers/settings_controller.dart';
+import 'services/storage_service.dart';
+import 'services/notification_service.dart';
+import 'utils/app_constants.dart';
+import 'utils/app_theme.dart';
+import 'views/screens/home_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  // Ensure Flutter is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize services
+  final storageService = StorageService();
+  await storageService.init();
+  
+  final notificationService = NotificationService();
+  await notificationService.init();
+  
+  runApp(
+    MyApp(
+      storageService: storageService,
+      notificationService: notificationService,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final StorageService storageService;
+  final NotificationService notificationService;
+  
+  const MyApp({
+    Key? key,
+    required this.storageService,
+    required this.notificationService,
+  }) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        // Register controllers
+        ChangeNotifierProvider(
+          create: (_) => SettingsController(storageService),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => WaterTrackingController(storageService),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => NotificationController(notificationService, storageService),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => HistoryController(storageService),
+        ),
+      ],
+      child: Consumer<SettingsController>(
+        builder: (context, settingsController, _) {
+          return MaterialApp(
+            title: AppConstants.appName,
+            theme: AppTheme.getLightTheme(),
+            darkTheme: AppTheme.getDarkTheme(),
+            themeMode: settingsController.themeMode,
+            home: const HomeScreen(),
+          );
+        },
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
