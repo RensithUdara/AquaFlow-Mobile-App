@@ -2,13 +2,13 @@
 class DailyGoal {
   /// Target amount of water in milliliters for the day
   final int targetAmount;
-  
+
   /// Current amount of water consumed in milliliters
   final int currentAmount;
-  
+
   /// Date for this goal
   final DateTime date;
-  
+
   /// Whether the goal has been completed
   final bool isCompleted;
 
@@ -21,11 +21,11 @@ class DailyGoal {
   });
 
   /// Get the percentage of progress towards the daily goal
-  double get progressPercentage => 
+  double get progressPercentage =>
       targetAmount > 0 ? (currentAmount / targetAmount).clamp(0.0, 1.0) : 0.0;
 
   /// Get the remaining amount of water to reach the goal
-  int get remainingAmount => 
+  int get remainingAmount =>
       currentAmount >= targetAmount ? 0 : targetAmount - currentAmount;
 
   /// Create a copy of this DailyGoal with specified fields replaced with new values
@@ -54,7 +54,8 @@ class DailyGoal {
 
   /// Remove a water entry amount from the current amount
   DailyGoal removeWater(int amount) {
-    final newAmount = (currentAmount - amount).clamp(0, double.infinity).toInt();
+    final newAmount =
+        (currentAmount - amount).clamp(0, double.infinity).toInt();
     return copyWith(
       currentAmount: newAmount,
       isCompleted: newAmount >= targetAmount,
