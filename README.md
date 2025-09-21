@@ -57,7 +57,7 @@ AquaFlow is built using the Model-View-Controller (MVC) architecture pattern:
    flutter run
    ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 lib/
@@ -71,11 +71,16 @@ lib/
 └── main.dart          # App entry point
 ```
 
-## License
+## 📝 Changelog
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+See the [CHANGELOG.md](CHANGELOG.md) file for details on version updates and changes.
 
-## Acknowledgements
+## 📄 License
 
-- Hydration icons created by [Freepik](https://www.freepik.com)
-- Wave animation inspired by [Flutter Wave Animation](https://github.com/placeholder)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👏 Acknowledgements
+
+- 💧 Hydration icons created by [Freepik](https://www.freepik.com)
+- 🌊 Wave animation inspired by [Flutter Wave Animation](https://github.com/placeholder)
+- 🙏 Thanks to all contributors who helped with this project
