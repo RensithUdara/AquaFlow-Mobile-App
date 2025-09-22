@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/history_controller.dart';
-import 'controllers/notification_controller.dart';
+// import 'controllers/notification_controller.dart'; // Temporarily commented out
 import 'controllers/settings_controller.dart';
 import 'controllers/water_tracking_controller.dart';
-import 'services/notification_service.dart';
+// import 'services/notification_service.dart'; // Temporarily commented out
 import 'services/storage_service.dart';
 import 'utils/app_constants.dart';
 import 'utils/app_theme.dart';
@@ -19,25 +19,27 @@ void main() async {
   final storageService = StorageService();
   await storageService.init();
 
-  final notificationService = NotificationService();
-  await notificationService.init();
+  // Notification service temporarily disabled
+  // final notificationService = NotificationService();
+  // await notificationService.init();
 
   runApp(
     MyApp(
       storageService: storageService,
-      notificationService: notificationService,
+      // notificationService: notificationService, // Temporarily disabled
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   final StorageService storageService;
-  final NotificationService notificationService;
+  // Notification service temporarily disabled
+  // final NotificationService notificationService;
 
   const MyApp({
     super.key,
     required this.storageService,
-    required this.notificationService,
+    // required this.notificationService, // Temporarily disabled
   });
 
   @override
@@ -51,10 +53,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => WaterTrackingController(storageService),
         ),
-        ChangeNotifierProvider(
-          create: (_) =>
-              NotificationController(notificationService, storageService),
-        ),
+        // Notification controller temporarily disabled
+        // ChangeNotifierProvider(
+        //   create: (_) =>
+        //       NotificationController(notificationService, storageService),
+        // ),
         ChangeNotifierProvider(
           create: (_) => HistoryController(storageService),
         ),

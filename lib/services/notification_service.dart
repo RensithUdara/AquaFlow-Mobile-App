@@ -1,16 +1,34 @@
-import 'dart:math';
-
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz_data;
-import 'package:timezone/timezone.dart' as tz;
+// Notification service temporarily disabled
+// Imports commented out due to package compatibility issues
+// import 'dart:math';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:timezone/data/latest.dart' as tz_data;
+// import 'package:timezone/timezone.dart' as tz;
 
 import '../models/notification_settings.dart';
 import '../utils/app_constants.dart';
 
-/// Service for managing app notifications
+/// Stub service for managing app notifications - temporarily disabled due to package compatibility issues
 class NotificationService {
-  final FlutterLocalNotificationsPlugin _notificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // Stub implementation with no-op methods to maintain interface compatibility
+
+  /// Initialize the notification service
+  Future<void> init() async {
+    // No-op implementation
+    print('Notifications temporarily disabled');
+  }
+
+  /// Request notification permissions
+  Future<bool> requestPermissions() async {
+    // Always return false since notifications are disabled
+    return false;
+  }
+
+  /// Schedule a water reminder notification
+  Future<void> scheduleReminder(DateTime scheduledTime,
+      {String? customMessage}) async {
+    // No-op implementation
+  }
 
   /// Initialize the notification service
   Future<void> init() async {
