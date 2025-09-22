@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/history_controller.dart';
-// import 'controllers/notification_controller.dart'; // Temporarily commented out
 import 'controllers/settings_controller.dart';
 import 'controllers/water_tracking_controller.dart';
-// import 'services/notification_service.dart'; // Temporarily commented out
 import 'services/storage_service.dart';
 import 'utils/app_constants.dart';
 import 'utils/app_theme.dart';
@@ -19,14 +17,9 @@ void main() async {
   final storageService = StorageService();
   await storageService.init();
 
-  // Notification service temporarily disabled
-  // final notificationService = NotificationService();
-  // await notificationService.init();
-
   runApp(
     MyApp(
       storageService: storageService,
-      // notificationService: notificationService, // Temporarily disabled
     ),
   );
 }
