@@ -26,13 +26,10 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final StorageService storageService;
-  // Notification service temporarily disabled
-  // final NotificationService notificationService;
 
   const MyApp({
     super.key,
     required this.storageService,
-    // required this.notificationService, // Temporarily disabled
   });
 
   @override
