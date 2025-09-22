@@ -139,12 +139,13 @@ class NotificationController with ChangeNotifier {
       int currentIntake, int targetIntake) async {
     if (!_settings.isEnabled || !_settings.smartRemindersEnabled) return;
 
-    await _notificationService.scheduleSmartReminder(
-      _settings,
-      DateTime.now(),
-      currentIntake,
-      targetIntake,
-    );
+    // Temporarily disabled due to notification package issues
+    // await _notificationService.scheduleSmartReminder(
+    //   _settings,
+    //   DateTime.now(),
+    //   currentIntake,
+    //   targetIntake,
+    // );
   }
 
   /// Refresh notification schedule
@@ -160,8 +161,9 @@ class NotificationController with ChangeNotifier {
 
   /// Schedule reminders based on current settings
   Future<void> _scheduleReminders() async {
-    await _notificationService.scheduleRemindersForDay(
-        _settings, DateTime.now());
+    // Temporarily disabled due to notification package issues
+    // await _notificationService.scheduleRemindersForDay(
+    //     _settings, DateTime.now());
   }
 
   /// Load notification settings from storage
