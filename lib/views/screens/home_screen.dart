@@ -209,7 +209,8 @@ class HomeScreen extends StatelessWidget {
         left: AppConstants.contentPadding,
         right: AppConstants.contentPadding,
         top: AppConstants.contentPadding / 2,
-        bottom: AppConstants.contentPadding + 80, // Extra padding for the bottom nav bar
+        bottom: AppConstants.contentPadding +
+            80, // Extra padding for the bottom nav bar
       ),
       color: isDarkMode ? AppColors.darkBackground : AppColors.lightBackground,
       child: Column(
@@ -221,11 +222,14 @@ class HomeScreen extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppConstants.borderRadius),
               side: BorderSide(
-                color: isDarkMode ? AppColors.darkSurfaceBackground : Colors.grey.shade200,
+                color: isDarkMode
+                    ? AppColors.darkSurfaceBackground
+                    : Colors.grey.shade200,
                 width: 1,
               ),
             ),
-            color: isDarkMode ? AppColors.darkSecondaryBackground : Colors.white,
+            color:
+                isDarkMode ? AppColors.darkSecondaryBackground : Colors.white,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
@@ -235,20 +239,26 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Today\'s Hydration',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: _getStatusColor(waterController.progressPercentage, isDarkMode).withOpacity(0.1),
+                          color: _getStatusColor(
+                                  waterController.progressPercentage,
+                                  isDarkMode)
+                              .withOpacity(0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           _getStatusText(waterController.progressPercentage),
                           style: TextStyle(
-                            color: _getStatusColor(waterController.progressPercentage, isDarkMode),
+                            color: _getStatusColor(
+                                waterController.progressPercentage, isDarkMode),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -260,35 +270,36 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       _buildStatColumn(
-                        context, 
-                        'Consumed', 
-                        UtilityService.formatAmount(waterController.totalAmount),
-                        Icons.local_drink_rounded,
-                        AppColors.primaryBlue
-                      ),
+                          context,
+                          'Consumed',
+                          UtilityService.formatAmount(
+                              waterController.totalAmount),
+                          Icons.local_drink_rounded,
+                          AppColors.primaryBlue),
                       _buildVerticalDivider(isDarkMode),
                       _buildStatColumn(
-                        context, 
-                        'Goal', 
-                        UtilityService.formatAmount(goalAmount),
-                        Icons.flag_rounded,
-                        isDarkMode ? AppColors.lightBlue : AppColors.deepBlue
-                      ),
+                          context,
+                          'Goal',
+                          UtilityService.formatAmount(goalAmount),
+                          Icons.flag_rounded,
+                          isDarkMode
+                              ? AppColors.lightBlue
+                              : AppColors.deepBlue),
                       _buildVerticalDivider(isDarkMode),
                       _buildStatColumn(
-                        context, 
-                        'Remaining', 
-                        UtilityService.formatAmount(math.max(0, goalAmount - waterController.totalAmount)),
-                        Icons.hourglass_bottom_rounded,
-                        AppColors.warningOrange
-                      ),
+                          context,
+                          'Remaining',
+                          UtilityService.formatAmount(math.max(
+                              0, goalAmount - waterController.totalAmount)),
+                          Icons.hourglass_bottom_rounded,
+                          AppColors.warningOrange),
                     ],
                   ),
                 ],
               ),
             ),
           ),
-          
+
           const SizedBox(height: 16),
 
           // Water progress indicator
@@ -298,11 +309,14 @@ class HomeScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                 side: BorderSide(
-                  color: isDarkMode ? AppColors.darkSurfaceBackground : Colors.grey.shade200,
+                  color: isDarkMode
+                      ? AppColors.darkSurfaceBackground
+                      : Colors.grey.shade200,
                   width: 1,
                 ),
               ),
-              color: isDarkMode ? AppColors.darkSecondaryBackground : Colors.white,
+              color:
+                  isDarkMode ? AppColors.darkSecondaryBackground : Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: WaterProgressIndicator(
@@ -323,11 +337,14 @@ class HomeScreen extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppConstants.borderRadius),
               side: BorderSide(
-                color: isDarkMode ? AppColors.darkSurfaceBackground : Colors.grey.shade200,
+                color: isDarkMode
+                    ? AppColors.darkSurfaceBackground
+                    : Colors.grey.shade200,
                 width: 1,
               ),
             ),
-            color: isDarkMode ? AppColors.darkSecondaryBackground : Colors.white,
+            color:
+                isDarkMode ? AppColors.darkSecondaryBackground : Colors.white,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
@@ -337,20 +354,24 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.add_circle_rounded,
-                        color: isDarkMode ? AppColors.lightBlue : AppColors.primaryBlue,
+                        color: isDarkMode
+                            ? AppColors.lightBlue
+                            : AppColors.primaryBlue,
                       ),
                       const SizedBox(width: 8),
                       Text(
                         'Quick Add',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
                   QuickAddButtons(
-                    onAmountSelected: (amount) => _quickAddWater(context, amount),
+                    onAmountSelected: (amount) =>
+                        _quickAddWater(context, amount),
                   ),
                   const SizedBox(height: 12),
                   SizedBox(
@@ -360,7 +381,9 @@ class HomeScreen extends StatelessWidget {
                       icon: const Icon(Icons.water_drop_rounded),
                       label: const Text('Add Custom Amount'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: isDarkMode ? AppColors.deepBlue : AppColors.primaryBlue,
+                        backgroundColor: isDarkMode
+                            ? AppColors.deepBlue
+                            : AppColors.primaryBlue,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
@@ -377,9 +400,10 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Build a stat column with label, value and icon
-  Widget _buildStatColumn(BuildContext context, String label, String value, IconData icon, Color color) {
+  Widget _buildStatColumn(BuildContext context, String label, String value,
+      IconData icon, Color color) {
     return Column(
       children: [
         Icon(icon, color: color, size: 26),
@@ -394,13 +418,17 @@ class HomeScreen extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.color
+                    ?.withOpacity(0.7),
               ),
         ),
       ],
     );
   }
-  
+
   /// Build vertical divider for stats
   Widget _buildVerticalDivider(bool isDarkMode) {
     return Container(
@@ -409,7 +437,7 @@ class HomeScreen extends StatelessWidget {
       color: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade300,
     );
   }
-  
+
   /// Get color based on progress percentage
   Color _getStatusColor(double progress, bool isDarkMode) {
     if (progress >= 1.0) {
@@ -422,7 +450,7 @@ class HomeScreen extends StatelessWidget {
       return AppColors.errorRed;
     }
   }
-  
+
   /// Get status text based on progress percentage
   String _getStatusText(double progress) {
     if (progress >= 1.0) {
@@ -435,75 +463,74 @@ class HomeScreen extends StatelessWidget {
       return 'Just Started';
     }
   }
-  }
+}
 
-  // Bottom navigation bar method removed as it's already in AppScaffold
+// Bottom navigation bar method removed as it's already in AppScaffold
 
-  /// Add water using quick add buttons
-  void _quickAddWater(BuildContext context, int amount) {
-    final waterController = context.read<WaterTrackingController>();
-    waterController.addWaterEntry(amount);
+/// Add water using quick add buttons
+void _quickAddWater(BuildContext context, int amount) {
+  final waterController = context.read<WaterTrackingController>();
+  waterController.addWaterEntry(amount);
 
-    // Show success message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Added ${UtilityService.formatAmount(amount)}'),
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-      ),
+  // Show success message
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text('Added ${UtilityService.formatAmount(amount)}'),
+      duration: const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+    ),
+  );
+
+  // Schedule smart reminder if needed
+  final notificationController = context.read<NotificationController>();
+  if (notificationController.smartRemindersEnabled) {
+    notificationController.scheduleSmartReminder(
+      waterController.totalAmount,
+      waterController.dailyGoal?.targetAmount ??
+          context.read<SettingsController>().userProfile.dailyGoal,
     );
-
-    // Schedule smart reminder if needed
-    final notificationController = context.read<NotificationController>();
-    if (notificationController.smartRemindersEnabled) {
-      notificationController.scheduleSmartReminder(
-        waterController.totalAmount,
-        waterController.dailyGoal?.targetAmount ??
-            context.read<SettingsController>().userProfile.dailyGoal,
-      );
-    }
   }
+}
 
-  /// Navigate to add water screen - uses the parent AppScaffold's bottom nav instead
-  void _navigateToAddWater(BuildContext context) {
-    // We don't need to push a new screen since we have bottom navigation in AppScaffold
-    // This could be changed to communicate with AppScaffold to change the selected index
-    // For now, just show a dialog to add custom water amount
+/// Navigate to add water screen - uses the parent AppScaffold's bottom nav instead
+void _navigateToAddWater(BuildContext context) {
+  // We don't need to push a new screen since we have bottom navigation in AppScaffold
+  // This could be changed to communicate with AppScaffold to change the selected index
+  // For now, just show a dialog to add custom water amount
 
-    final waterController = context.read<WaterTrackingController>();
+  final waterController = context.read<WaterTrackingController>();
 
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add Custom Amount'),
-        content: TextField(
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            labelText: 'Amount (ml)',
-            hintText: 'Enter custom amount',
-          ),
-          onSubmitted: (value) {
-            final amount = int.tryParse(value);
-            if (amount != null && amount > 0) {
-              waterController.addWaterEntry(amount);
-              Navigator.pop(context);
-            }
-          },
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Add Custom Amount'),
+      content: TextField(
+        keyboardType: TextInputType.number,
+        decoration: const InputDecoration(
+          labelText: 'Amount (ml)',
+          hintText: 'Enter custom amount',
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              // Implementation would be added here in a real app
-              Navigator.pop(context);
-            },
-            child: const Text('Add'),
-          ),
-        ],
+        onSubmitted: (value) {
+          final amount = int.tryParse(value);
+          if (amount != null && amount > 0) {
+            waterController.addWaterEntry(amount);
+            Navigator.pop(context);
+          }
+        },
       ),
-    );
-  }
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            // Implementation would be added here in a real app
+            Navigator.pop(context);
+          },
+          child: const Text('Add'),
+        ),
+      ],
+    ),
+  );
 }
