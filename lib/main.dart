@@ -19,19 +19,25 @@ void main() async {
   final storageService = StorageService();
   await storageService.init();
 
+  // Create notification service (stub implementation)
+  final notificationService = NotificationService();
+
   runApp(
     MyApp(
       storageService: storageService,
+      notificationService: notificationService,
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   final StorageService storageService;
+  final NotificationService notificationService;
 
   const MyApp({
     super.key,
     required this.storageService,
+    required this.notificationService,
   });
 
   @override
@@ -48,7 +54,7 @@ class MyApp extends StatelessWidget {
         // Simplified NotificationController that doesn't implement notification functionality
         ChangeNotifierProvider(
           create: (_) =>
-              NotificationController(NotificationService(), storageService),
+              NotificationController(notificationService, storageService),
         ),
         ChangeNotifierProvider(
           create: (_) => HistoryController(storageService),
