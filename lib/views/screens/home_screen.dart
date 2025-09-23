@@ -9,9 +9,6 @@ import '../../utils/app_constants.dart';
 import '../../utils/utility_service.dart';
 import '../widgets/quick_add_buttons.dart';
 import '../widgets/water_progress_indicator.dart';
-import 'add_water_screen.dart';
-import 'history_screen.dart';
-import 'settings_screen.dart';
 
 /// Home screen of the app
 class HomeScreen extends StatelessWidget {
@@ -171,9 +168,9 @@ class HomeScreen extends StatelessWidget {
     // We don't need to push a new screen since we have bottom navigation in AppScaffold
     // This could be changed to communicate with AppScaffold to change the selected index
     // For now, just show a dialog to add custom water amount
-    
+
     final waterController = context.read<WaterTrackingController>();
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
