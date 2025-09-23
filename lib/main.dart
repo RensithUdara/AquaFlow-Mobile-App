@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         // Simplified NotificationController that doesn't implement notification functionality
         ChangeNotifierProvider(
           create: (_) =>
-              NotificationController(NotificationService(), storageService),
+              NotificationController(notificationService, storageService),
         ),
         ChangeNotifierProvider(
           create: (_) => HistoryController(storageService),
