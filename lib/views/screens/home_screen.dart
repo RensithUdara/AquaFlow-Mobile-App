@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -198,54 +200,241 @@ class HomeScreen extends StatelessWidget {
     final waterController = context.watch<WaterTrackingController>();
     final settingsController = context.watch<SettingsController>();
     final isDarkMode = settingsController.isDarkTheme(context);
+    final goalAmount = waterController.dailyGoal?.targetAmount ??
+        settingsController.userProfile.dailyGoal;
 
     return Container(
       // Added padding at the bottom to prevent overflow
       padding: const EdgeInsets.only(
         left: AppConstants.contentPadding,
         right: AppConstants.contentPadding,
-        top: AppConstants.contentPadding,
-        bottom: AppConstants.contentPadding +
-            80, // Extra padding for the bottom nav bar
+        top: AppConstants.contentPadding / 2,
+        bottom: AppConstants.contentPadding + 80, // Extra padding for the bottom nav bar
       ),
       color: isDarkMode ? AppColors.darkBackground : AppColors.lightBackground,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Hydration Tracker',
-            style: Theme.of(context).textTheme.headlineSmall,
+          // Today's status card
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+              side: BorderSide(
+                color: isDarkMode ? AppColors.darkSurfaceBackground : Colors.grey.shade200,
+                width: 1,
+              ),
+            ),
+            color: isDarkMode ? AppColors.darkSecondaryBackground : Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Today\'s Hydration',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: _getStatusColor(waterController.progressPercentage, isDarkMode).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          _getStatusText(waterController.progressPercentage),
+                          style: TextStyle(
+                            color: _getStatusColor(waterController.progressPercentage, isDarkMode),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Divider(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildStatColumn(
+                        context, 
+                        'Consumed', 
+                        UtilityService.formatAmount(waterController.totalAmount),
+                        Icons.local_drink_rounded,
+                        AppColors.primaryBlue
+                      ),
+                      _buildVerticalDivider(isDarkMode),
+                      _buildStatColumn(
+                        context, 
+                        'Goal', 
+                        UtilityService.formatAmount(goalAmount),
+                        Icons.flag_rounded,
+                        isDarkMode ? AppColors.lightBlue : AppColors.deepBlue
+                      ),
+                      _buildVerticalDivider(isDarkMode),
+                      _buildStatColumn(
+                        context, 
+                        'Remaining', 
+                        UtilityService.formatAmount(math.max(0, goalAmount - waterController.totalAmount)),
+                        Icons.hourglass_bottom_rounded,
+                        AppColors.warningOrange
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
-          const SizedBox(height: 20),
+          
+          const SizedBox(height: 16),
 
           // Water progress indicator
           Expanded(
-            child: WaterProgressIndicator(
-              progress: waterController.progressPercentage,
-              currentAmount: waterController.totalAmount,
-              targetAmount: waterController.dailyGoal?.targetAmount ??
-                  settingsController.userProfile.dailyGoal,
-              isDarkMode: isDarkMode,
+            child: Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+                side: BorderSide(
+                  color: isDarkMode ? AppColors.darkSurfaceBackground : Colors.grey.shade200,
+                  width: 1,
+                ),
+              ),
+              color: isDarkMode ? AppColors.darkSecondaryBackground : Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: WaterProgressIndicator(
+                  progress: waterController.progressPercentage,
+                  currentAmount: waterController.totalAmount,
+                  targetAmount: goalAmount,
+                  isDarkMode: isDarkMode,
+                ),
+              ),
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
 
           // Quick add buttons
-          QuickAddButtons(
-            onAmountSelected: (amount) => _quickAddWater(context, amount),
-          ),
-
-          const SizedBox(height: 10),
-
-          // Add custom button
-          OutlinedButton.icon(
-            onPressed: () => _navigateToAddWater(context),
-            icon: const Icon(Icons.add),
-            label: const Text('Add Custom Water'),
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+              side: BorderSide(
+                color: isDarkMode ? AppColors.darkSurfaceBackground : Colors.grey.shade200,
+                width: 1,
+              ),
+            ),
+            color: isDarkMode ? AppColors.darkSecondaryBackground : Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.add_circle_rounded,
+                        color: isDarkMode ? AppColors.lightBlue : AppColors.primaryBlue,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Quick Add',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  QuickAddButtons(
+                    onAmountSelected: (amount) => _quickAddWater(context, amount),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () => _navigateToAddWater(context),
+                      icon: const Icon(Icons.water_drop_rounded),
+                      label: const Text('Add Custom Amount'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isDarkMode ? AppColors.deepBlue : AppColors.primaryBlue,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
+  }
+  
+  /// Build a stat column with label, value and icon
+  Widget _buildStatColumn(BuildContext context, String label, String value, IconData icon, Color color) {
+    return Column(
+      children: [
+        Icon(icon, color: color, size: 26),
+        const SizedBox(height: 8),
+        Text(
+          value,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
+              ),
+        ),
+      ],
+    );
+  }
+  
+  /// Build vertical divider for stats
+  Widget _buildVerticalDivider(bool isDarkMode) {
+    return Container(
+      height: 40,
+      width: 1,
+      color: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade300,
+    );
+  }
+  
+  /// Get color based on progress percentage
+  Color _getStatusColor(double progress, bool isDarkMode) {
+    if (progress >= 1.0) {
+      return AppColors.successGreen;
+    } else if (progress >= 0.7) {
+      return AppColors.primaryBlue;
+    } else if (progress >= 0.4) {
+      return AppColors.warningOrange;
+    } else {
+      return AppColors.errorRed;
+    }
+  }
+  
+  /// Get status text based on progress percentage
+  String _getStatusText(double progress) {
+    if (progress >= 1.0) {
+      return 'Goal Achieved!';
+    } else if (progress >= 0.7) {
+      return 'Almost There!';
+    } else if (progress >= 0.4) {
+      return 'Making Progress';
+    } else {
+      return 'Just Started';
+    }
+  }
   }
 
   // Bottom navigation bar method removed as it's already in AppScaffold
