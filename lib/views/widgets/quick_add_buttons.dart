@@ -30,13 +30,16 @@ class QuickAddButtons extends StatelessWidget {
   Widget _buildQuickAddButton(BuildContext context, int amount) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return InkWell(
-      onTap: () => onAmountSelected(amount),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: isDarkMode
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => onAmountSelected(amount),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          width: 80,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          decoration: BoxDecoration(
+            color: isDarkMode
               ? AppColors.darkSurfaceBackground
               : AppColors.lightSurfaceBackground,
           borderRadius: BorderRadius.circular(12),
