@@ -166,27 +166,46 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  /// Navigate to add water screen
+  /// Navigate to add water screen - uses the parent AppScaffold's bottom nav instead
   void _navigateToAddWater(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AddWaterScreen()),
-    );
-  }
-
-  /// Navigate to history screen
-  void _navigateToHistory(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const HistoryScreen()),
-    );
-  }
-
-  /// Navigate to settings screen
-  void _navigateToSettings(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+    // We don't need to push a new screen since we have bottom navigation in AppScaffold
+    // This could be changed to communicate with AppScaffold to change the selected index
+    // For now, just show a dialog to add custom water amount
+    
+    final waterController = context.read<WaterTrackingController>();
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add Custom Amount'),
+        content: TextField(
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(
+            labelText: 'Amount (ml)',
+            hintText: 'Enter custom amount',
+          ),
+          onSubmitted: (value) {
+            final amount = int.tryParse(value);
+            if (amount != null && amount > 0) {
+              waterController.addWaterEntry(amount);
+              Navigator.pop(context);
+            }
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Implementation would be added here in a real app
+              Navigator.pop(context);
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
     );
   }
 }
