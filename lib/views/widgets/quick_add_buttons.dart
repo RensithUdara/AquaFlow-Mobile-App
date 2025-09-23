@@ -78,10 +78,10 @@ class QuickAddButtons extends StatelessWidget {
                       color: isDarkMode ? AppColors.lightBlue.withOpacity(0.7) : AppColors.deepBlue.withOpacity(0.7),
                     ),
               ),
-          ],
+            ],
+          ),
         ),
       ),
     );
-
   }
 }
