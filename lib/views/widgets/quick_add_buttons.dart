@@ -16,24 +16,13 @@ class QuickAddButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          'Quick Add',
-          style: Theme.of(context).textTheme.titleMedium,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 10),
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 10,
-          runSpacing: 10,
-          children: AppConstants.quickAddAmounts.map((amount) {
-            return _buildQuickAddButton(context, amount);
-          }).toList(),
-        ),
-      ],
+    return Wrap(
+      alignment: WrapAlignment.spaceEvenly,
+      spacing: 10,
+      runSpacing: 10,
+      children: AppConstants.quickAddAmounts.map((amount) {
+        return _buildQuickAddButton(context, amount);
+      }).toList(),
     );
   }
 
