@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/history_controller.dart';
+import 'controllers/notification_controller.dart';
 import 'controllers/settings_controller.dart';
 import 'controllers/water_tracking_controller.dart';
+import 'services/notification_service.dart';
 import 'services/storage_service.dart';
 import 'utils/app_constants.dart';
 import 'utils/app_theme.dart';
@@ -43,11 +45,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => WaterTrackingController(storageService),
         ),
-        // Notification controller temporarily disabled
-        // ChangeNotifierProvider(
-        //   create: (_) =>
-        //       NotificationController(notificationService, storageService),
-        // ),
+        // Simplified NotificationController that doesn't implement notification functionality
+        ChangeNotifierProvider(
+          create: (_) =>
+              NotificationController(NotificationService(), storageService),
+        ),
         ChangeNotifierProvider(
           create: (_) => HistoryController(storageService),
         ),
