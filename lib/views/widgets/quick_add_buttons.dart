@@ -16,13 +16,24 @@ class QuickAddButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.spaceEvenly,
-      spacing: 10,
-      runSpacing: 10,
-      children: AppConstants.quickAddAmounts.map((amount) {
-        return _buildQuickAddButton(context, amount);
-      }).toList(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Quick Add',
+          style: Theme.of(context).textTheme.titleMedium,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 10),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 10,
+          runSpacing: 10,
+          children: AppConstants.quickAddAmounts.map((amount) {
+            return _buildQuickAddButton(context, amount);
+          }).toList(),
+        ),
+      ],
     );
   }
 
@@ -30,62 +41,39 @@ class QuickAddButtons extends StatelessWidget {
   Widget _buildQuickAddButton(BuildContext context, int amount) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () => onAmountSelected(amount),
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          width: 80,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-          decoration: BoxDecoration(
-            color: isDarkMode
-                ? AppColors.deepBlue.withOpacity(0.15)
-                : AppColors.lightBlue.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: isDarkMode
-                  ? AppColors.deepBlue.withOpacity(0.3)
-                  : AppColors.lightBlue.withOpacity(0.3),
-              width: 1.5,
+    return InkWell(
+      onTap: () => onAmountSelected(amount),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: isDarkMode
+              ? AppColors.darkSurfaceBackground
+              : AppColors.lightSurfaceBackground,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppColors.primaryBlue.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Column(
+          children: [
+            Text(
+              '$amount',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primaryBlue,
+                  ),
             ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.water_drop_rounded,
+            Text(
+              'ml',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: isDarkMode
-                        ? AppColors.lightBlue
-                        : AppColors.primaryBlue,
-                    size: 14,
+                        ? AppColors.darkSecondaryText
+                        : AppColors.lightSecondaryText,
                   ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '+$amount',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: isDarkMode
-                              ? AppColors.lightBlue
-                              : AppColors.primaryBlue,
-                        ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'ml',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: isDarkMode
-                          ? AppColors.lightBlue.withOpacity(0.7)
-                          : AppColors.deepBlue.withOpacity(0.7),
-                    ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
