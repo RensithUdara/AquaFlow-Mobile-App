@@ -52,8 +52,14 @@ class HomeScreen extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: isDarkMode
-              ? [AppColors.navyBlue.withOpacity(0.9), AppColors.deepBlue.withOpacity(0.7)]
-              : [AppColors.lightBlue.withOpacity(0.8), AppColors.aquaBlue.withOpacity(0.6)],
+              ? [
+                  AppColors.navyBlue.withOpacity(0.9),
+                  AppColors.deepBlue.withOpacity(0.7)
+                ]
+              : [
+                  AppColors.lightBlue.withOpacity(0.8),
+                  AppColors.aquaBlue.withOpacity(0.6)
+                ],
         ),
         boxShadow: [
           BoxShadow(
@@ -82,20 +88,23 @@ class HomeScreen extends StatelessWidget {
                   Text(
                     'Your hydration goal for today',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: isDarkMode ? Colors.white70 : AppColors.deepBlue,
+                          color:
+                              isDarkMode ? Colors.white70 : AppColors.deepBlue,
                         ),
                   ),
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: isDarkMode 
-                      ? AppColors.primaryBlue.withOpacity(0.2) 
+                  color: isDarkMode
+                      ? AppColors.primaryBlue.withOpacity(0.2)
                       : Colors.white.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+                  borderRadius:
+                      BorderRadius.circular(AppConstants.borderRadius),
                   border: Border.all(
-                    color: isDarkMode 
+                    color: isDarkMode
                         ? AppColors.lightBlue.withOpacity(0.3)
                         : Colors.white.withOpacity(0.7),
                     width: 1.5,
@@ -106,14 +115,17 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.water_drop_rounded,
-                      color: isDarkMode ? AppColors.lightBlue : AppColors.primaryBlue,
+                      color: isDarkMode
+                          ? AppColors.lightBlue
+                          : AppColors.primaryBlue,
                       size: 24,
                     ),
                     const SizedBox(width: 8),
                     Text(
                       UtilityService.formatAmount(goalAmount),
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: isDarkMode ? Colors.white : AppColors.deepBlue,
+                            color:
+                                isDarkMode ? Colors.white : AppColors.deepBlue,
                             fontWeight: FontWeight.bold,
                           ),
                     ),
@@ -158,7 +170,8 @@ class HomeScreen extends StatelessWidget {
                 label: Text(
                   'Add Water',
                   style: TextStyle(
-                    color: isDarkMode ? AppColors.lightBlue : AppColors.deepBlue,
+                    color:
+                        isDarkMode ? AppColors.lightBlue : AppColors.deepBlue,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -166,7 +179,8 @@ class HomeScreen extends StatelessWidget {
                   backgroundColor: isDarkMode
                       ? AppColors.lightBlue.withOpacity(0.2)
                       : Colors.white.withOpacity(0.3),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
