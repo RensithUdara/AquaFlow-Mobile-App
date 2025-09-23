@@ -33,14 +33,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _navigateToAddWater(context),
-        backgroundColor: AppColors.primaryBlue,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // Removed bottom navigation bar as it's already in AppScaffold
     );
   }
 
@@ -139,48 +132,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Build bottom navigation bar
-  Widget _buildBottomNavBar(BuildContext context) {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 8.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          // Home
-          IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () {}, // Already on home screen
-            tooltip: 'Home',
-          ),
-
-          // History
-          IconButton(
-            icon: const Icon(Icons.history),
-            onPressed: () => _navigateToHistory(context),
-            tooltip: 'History',
-          ),
-
-          // Spacer for FAB
-          const SizedBox(width: 40),
-
-          // Notifications
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () => _navigateToSettings(context),
-            tooltip: 'Notifications',
-          ),
-
-          // Settings
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => _navigateToSettings(context),
-            tooltip: 'Settings',
-          ),
-        ],
-      ),
-    );
-  }
+  // Bottom navigation bar method removed as it's already in AppScaffold
 
   /// Add water using quick add buttons
   void _quickAddWater(BuildContext context, int amount) {
