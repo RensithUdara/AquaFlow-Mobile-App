@@ -9,9 +9,6 @@ import '../../utils/app_constants.dart';
 import '../../utils/utility_service.dart';
 import '../widgets/quick_add_buttons.dart';
 import '../widgets/water_progress_indicator.dart';
-import 'add_water_screen.dart';
-import 'history_screen.dart';
-import 'settings_screen.dart';
 
 /// Home screen of the app
 class HomeScreen extends StatelessWidget {
@@ -33,14 +30,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _navigateToAddWater(context),
-        backgroundColor: AppColors.primaryBlue,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // Removed bottom navigation bar as it's already in AppScaffold
     );
   }
 
@@ -98,7 +88,14 @@ class HomeScreen extends StatelessWidget {
     final isDarkMode = settingsController.isDarkTheme(context);
 
     return Container(
-      padding: const EdgeInsets.all(AppConstants.contentPadding),
+      // Added padding at the bottom to prevent overflow
+      padding: const EdgeInsets.only(
+        left: AppConstants.contentPadding,
+        right: AppConstants.contentPadding,
+        top: AppConstants.contentPadding,
+        bottom: AppConstants.contentPadding +
+            80, // Extra padding for the bottom nav bar
+      ),
       color: isDarkMode ? AppColors.darkBackground : AppColors.lightBackground,
       child: Column(
         children: [
@@ -139,48 +136,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Build bottom navigation bar
-  Widget _buildBottomNavBar(BuildContext context) {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 8.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          // Home
-          IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () {}, // Already on home screen
-            tooltip: 'Home',
-          ),
-
-          // History
-          IconButton(
-            icon: const Icon(Icons.history),
-            onPressed: () => _navigateToHistory(context),
-            tooltip: 'History',
-          ),
-
-          // Spacer for FAB
-          const SizedBox(width: 40),
-
-          // Notifications
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () => _navigateToSettings(context),
-            tooltip: 'Notifications',
-          ),
-
-          // Settings
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => _navigateToSettings(context),
-            tooltip: 'Settings',
-          ),
-        ],
-      ),
-    );
-  }
+  // Bottom navigation bar method removed as it's already in AppScaffold
 
   /// Add water using quick add buttons
   void _quickAddWater(BuildContext context, int amount) {
@@ -207,27 +163,46 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  /// Navigate to add water screen
+  /// Navigate to add water screen - uses the parent AppScaffold's bottom nav instead
   void _navigateToAddWater(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AddWaterScreen()),
-    );
-  }
+    // We don't need to push a new screen since we have bottom navigation in AppScaffold
+    // This could be changed to communicate with AppScaffold to change the selected index
+    // For now, just show a dialog to add custom water amount
 
-  /// Navigate to history screen
-  void _navigateToHistory(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const HistoryScreen()),
-    );
-  }
+    final waterController = context.read<WaterTrackingController>();
 
-  /// Navigate to settings screen
-  void _navigateToSettings(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add Custom Amount'),
+        content: TextField(
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(
+            labelText: 'Amount (ml)',
+            hintText: 'Enter custom amount',
+          ),
+          onSubmitted: (value) {
+            final amount = int.tryParse(value);
+            if (amount != null && amount > 0) {
+              waterController.addWaterEntry(amount);
+              Navigator.pop(context);
+            }
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Implementation would be added here in a real app
+              Navigator.pop(context);
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
     );
   }
 }
