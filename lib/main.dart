@@ -18,7 +18,7 @@ void main() async {
   // Initialize services
   final storageService = StorageService();
   await storageService.init();
-  
+
   // Create notification service (stub implementation)
   final notificationService = NotificationService();
 
