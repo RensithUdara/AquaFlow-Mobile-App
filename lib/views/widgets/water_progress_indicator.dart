@@ -31,119 +31,122 @@ class WaterProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          // Calculate circle size based on available space
-          final maxSize = math.min(constraints.maxWidth, constraints.maxHeight * 0.7);
-          final circleSize = math.min(220.0, maxSize);
-          final progressSize = circleSize * 0.91; // 200/220
-          final innerCircleSize = circleSize * 0.73; // 160/220
-          
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Progress circle
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Outer circle
-                  Container(
-                    width: circleSize,
-                    height: circleSize,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isDarkMode
-                          ? AppColors.darkSurfaceBackground
-                          : AppColors.lightSurfaceBackground,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                  ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        // Calculate circle size based on available space
+        final maxSize =
+            math.min(constraints.maxWidth, constraints.maxHeight * 0.7);
+        final circleSize = math.min(220.0, maxSize);
+        final progressSize = circleSize * 0.91; // 200/220
+        final innerCircleSize = circleSize * 0.73; // 160/220
 
-                  // Progress indicator
-                  SizedBox(
-                    width: progressSize,
-                    height: progressSize,
-                    child: CircularProgressIndicator(
-                      value: progress,
-                      strokeWidth: math.max(6, circleSize * 0.055), // Adaptive stroke width
-                      backgroundColor: isDarkMode
-                          ? AppColors.darkProgressBackground
-                          : AppColors.lightProgressBackground,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        _getProgressColor(),
-                      ),
-                    ),
-                  ),
-
-                  // Water level visualization
-                  Container(
-                    width: innerCircleSize,
-                    height: innerCircleSize,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isDarkMode
-                          ? AppColors.darkSecondaryBackground
-                          : AppColors.lightSecondaryBackground,
-                    ),
-                    child: _buildWaterLevel(context),
-                  ),
-
-                  // Current amount text
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        UtilityService.formatAmount(currentAmount),
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: isDarkMode
-                                  ? AppColors.darkPrimaryText
-                                  : AppColors.lightPrimaryText,
-                              // Adjust text size based on circle size
-                              fontSize: math.max(14, innerCircleSize * 0.15),
-                            ),
-                      ),
-                      SizedBox(height: math.max(2, circleSize * 0.018)),
-                      Text(
-                        'of ${UtilityService.formatAmount(targetAmount)}',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: isDarkMode
-                                  ? AppColors.darkSecondaryText
-                                  : AppColors.lightSecondaryText,
-                              // Adjust text size based on circle size
-                              fontSize: math.max(10, innerCircleSize * 0.09),
-                            ),
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Progress circle
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                // Outer circle
+                Container(
+                  width: circleSize,
+                  height: circleSize,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isDarkMode
+                        ? AppColors.darkSurfaceBackground
+                        : AppColors.lightSurfaceBackground,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        spreadRadius: 2,
                       ),
                     ],
                   ),
-                ],
-              ),
-
-              SizedBox(height: math.max(10, constraints.maxHeight * 0.05)),
-
-              // Motivational message
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  UtilityService.getMotivationalMessage(progress),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: _getProgressColor(),
-                        fontSize: math.max(12, constraints.maxHeight * 0.06),
-                      ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
+
+                // Progress indicator
+                SizedBox(
+                  width: progressSize,
+                  height: progressSize,
+                  child: CircularProgressIndicator(
+                    value: progress,
+                    strokeWidth: math.max(
+                        6, circleSize * 0.055), // Adaptive stroke width
+                    backgroundColor: isDarkMode
+                        ? AppColors.darkProgressBackground
+                        : AppColors.lightProgressBackground,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      _getProgressColor(),
+                    ),
+                  ),
+                ),
+
+                // Water level visualization
+                Container(
+                  width: innerCircleSize,
+                  height: innerCircleSize,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isDarkMode
+                        ? AppColors.darkSecondaryBackground
+                        : AppColors.lightSecondaryBackground,
+                  ),
+                  child: _buildWaterLevel(context),
+                ),
+
+                // Current amount text
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      UtilityService.formatAmount(currentAmount),
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: isDarkMode
+                                    ? AppColors.darkPrimaryText
+                                    : AppColors.lightPrimaryText,
+                                // Adjust text size based on circle size
+                                fontSize: math.max(14, innerCircleSize * 0.15),
+                              ),
+                    ),
+                    SizedBox(height: math.max(2, circleSize * 0.018)),
+                    Text(
+                      'of ${UtilityService.formatAmount(targetAmount)}',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: isDarkMode
+                                ? AppColors.darkSecondaryText
+                                : AppColors.lightSecondaryText,
+                            // Adjust text size based on circle size
+                            fontSize: math.max(10, innerCircleSize * 0.09),
+                          ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            SizedBox(height: math.max(10, constraints.maxHeight * 0.05)),
+
+            // Motivational message
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                UtilityService.getMotivationalMessage(progress),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: _getProgressColor(),
+                      fontSize: math.max(12, constraints.maxHeight * 0.06),
+                    ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-        ],
-      ),
+            ),
+          ],
+        );
+      }),
     );
   }
 
