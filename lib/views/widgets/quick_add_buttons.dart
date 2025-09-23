@@ -58,7 +58,9 @@ class QuickAddButtons extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.water_drop_rounded,
-                    color: isDarkMode ? AppColors.lightBlue : AppColors.primaryBlue,
+                    color: isDarkMode
+                        ? AppColors.lightBlue
+                        : AppColors.primaryBlue,
                     size: 14,
                   ),
                   const SizedBox(width: 4),
@@ -66,7 +68,9 @@ class QuickAddButtons extends StatelessWidget {
                     '+$amount',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: isDarkMode ? AppColors.lightBlue : AppColors.primaryBlue,
+                          color: isDarkMode
+                              ? AppColors.lightBlue
+                              : AppColors.primaryBlue,
                         ),
                   ),
                 ],
@@ -75,7 +79,9 @@ class QuickAddButtons extends StatelessWidget {
               Text(
                 'ml',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: isDarkMode ? AppColors.lightBlue.withOpacity(0.7) : AppColors.deepBlue.withOpacity(0.7),
+                      color: isDarkMode
+                          ? AppColors.lightBlue.withOpacity(0.7)
+                          : AppColors.deepBlue.withOpacity(0.7),
                     ),
               ),
             ],
