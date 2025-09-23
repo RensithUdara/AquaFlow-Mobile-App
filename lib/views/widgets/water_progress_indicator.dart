@@ -142,7 +142,9 @@ class WaterProgressIndicator extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-        ],
+            ],
+          );
+        }
       ),
     );
   }
