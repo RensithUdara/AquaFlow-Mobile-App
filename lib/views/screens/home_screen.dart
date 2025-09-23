@@ -91,7 +91,14 @@ class HomeScreen extends StatelessWidget {
     final isDarkMode = settingsController.isDarkTheme(context);
 
     return Container(
-      padding: const EdgeInsets.all(AppConstants.contentPadding),
+      // Added padding at the bottom to prevent overflow
+      padding: const EdgeInsets.only(
+        left: AppConstants.contentPadding,
+        right: AppConstants.contentPadding,
+        top: AppConstants.contentPadding,
+        bottom: AppConstants.contentPadding +
+            80, // Extra padding for the bottom nav bar
+      ),
       color: isDarkMode ? AppColors.darkBackground : AppColors.lightBackground,
       child: Column(
         children: [
