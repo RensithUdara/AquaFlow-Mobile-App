@@ -18,20 +18,26 @@ void main() async {
   // Initialize services
   final storageService = StorageService();
   await storageService.init();
+  
+  // Create notification service (stub implementation)
+  final notificationService = NotificationService();
 
   runApp(
     MyApp(
       storageService: storageService,
+      notificationService: notificationService,
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   final StorageService storageService;
+  final NotificationService notificationService;
 
   const MyApp({
     super.key,
     required this.storageService,
+    required this.notificationService,
   });
 
   @override
