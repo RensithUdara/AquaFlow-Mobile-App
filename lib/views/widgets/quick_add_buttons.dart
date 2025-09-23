@@ -40,34 +40,48 @@ class QuickAddButtons extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
           decoration: BoxDecoration(
             color: isDarkMode
-              ? AppColors.darkSurfaceBackground
-              : AppColors.lightSurfaceBackground,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: AppColors.primaryBlue.withOpacity(0.3),
-            width: 1,
+                ? AppColors.deepBlue.withOpacity(0.15)
+                : AppColors.lightBlue.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isDarkMode
+                  ? AppColors.deepBlue.withOpacity(0.3)
+                  : AppColors.lightBlue.withOpacity(0.3),
+              width: 1.5,
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Text(
-              '$amount',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryBlue,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.water_drop_rounded,
+                    color: isDarkMode ? AppColors.lightBlue : AppColors.primaryBlue,
+                    size: 14,
                   ),
-            ),
-            Text(
-              'ml',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: isDarkMode
-                        ? AppColors.darkSecondaryText
-                        : AppColors.lightSecondaryText,
+                  const SizedBox(width: 4),
+                  Text(
+                    '+$amount',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: isDarkMode ? AppColors.lightBlue : AppColors.primaryBlue,
+                        ),
                   ),
-            ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'ml',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: isDarkMode ? AppColors.lightBlue.withOpacity(0.7) : AppColors.deepBlue.withOpacity(0.7),
+                    ),
+              ),
           ],
         ),
       ),
     );
+
   }
 }
