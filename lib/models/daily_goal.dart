@@ -1,3 +1,5 @@
+import 'water_entry.dart';
+
 /// Model for representing a user's daily water intake goal
 class DailyGoal {
   /// Target amount of water in milliliters for the day
