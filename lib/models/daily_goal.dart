@@ -68,8 +68,11 @@ class DailyGoal {
 
   /// Remove a water entry from the goal
   DailyGoal removeWater(WaterEntry entry) {
-    final newTotal = (totalAmount - entry.amount).clamp(0, double.infinity).toInt();
-    final newHydration = (currentAmount - entry.hydrationAmount).clamp(0, double.infinity).toInt();
+    final newTotal =
+        (totalAmount - entry.amount).clamp(0, double.infinity).toInt();
+    final newHydration = (currentAmount - entry.hydrationAmount)
+        .clamp(0, double.infinity)
+        .toInt();
     return copyWith(
       totalAmount: newTotal,
       currentAmount: newHydration,
