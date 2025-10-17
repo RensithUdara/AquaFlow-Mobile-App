@@ -35,8 +35,10 @@ class AppConstants {
 
   // Hydration Factors
   static const double baseTemperature = 25.0; // Base temperature in Celsius
-  static const double temperatureThreshold = 5.0; // Temperature change threshold
-  static const double temperatureHydrationFactor = 0.1; // 10% increase per threshold
+  static const double temperatureThreshold =
+      5.0; // Temperature change threshold
+  static const double temperatureHydrationFactor =
+      0.1; // 10% increase per threshold
   static const double goalCompletionPercentage = 1.0;
 
   // Animation Durations
