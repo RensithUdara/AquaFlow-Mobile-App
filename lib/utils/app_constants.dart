@@ -8,6 +8,7 @@ class AppConstants {
   static const String userProfileKey = 'user_profile';
   static const String notificationSettingsKey = 'notification_settings';
   static const String dailyGoalKey = 'daily_goal';
+  static const String periodGoalKey = 'period_goal';
   static const String waterEntriesKey = 'water_entries';
   static const String themePreferenceKey = 'theme_preference';
 
