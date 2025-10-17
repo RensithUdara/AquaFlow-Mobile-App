@@ -1,4 +1,5 @@
 import 'package:uuid/uuid.dart';
+
 import 'drink_type.dart';
 
 /// Model for representing a single water intake entry
