@@ -176,7 +176,7 @@ class UserProfile {
   }
 
   /// Create a UserProfile from a map (JSON deserialization)
-  factory UserProfile.fromJson(Map<String, dynamic> json) {
+  UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
       dailyGoal: json['dailyGoal'] as int,
       weight: (json['weight'] as num).toDouble(),
