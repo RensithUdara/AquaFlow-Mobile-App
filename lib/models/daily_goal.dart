@@ -3,8 +3,11 @@ class DailyGoal {
   /// Target amount of water in milliliters for the day
   final int targetAmount;
 
-  /// Current amount of water consumed in milliliters
+  /// Current amount of water consumed in milliliters (actual hydration amount)
   final int currentAmount;
+
+  /// Total amount of drinks consumed in milliliters (raw amount)
+  final int totalAmount;
 
   /// Date for this goal
   final DateTime date;
@@ -12,12 +15,17 @@ class DailyGoal {
   /// Whether the goal has been completed
   final bool isCompleted;
 
+  /// Whether this goal maintains a streak from previous days
+  final bool maintainsStreak;
+
   /// Constructor for creating a daily goal
   DailyGoal({
     required this.targetAmount,
     this.currentAmount = 0,
+    this.totalAmount = 0,
     required this.date,
     this.isCompleted = false,
+    this.maintainsStreak = false,
   });
 
   /// Get the percentage of progress towards the daily goal
