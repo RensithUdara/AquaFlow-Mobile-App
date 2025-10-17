@@ -1,10 +1,15 @@
+import 'water_entry.dart';
+
 /// Model for representing a user's daily water intake goal
 class DailyGoal {
   /// Target amount of water in milliliters for the day
   final int targetAmount;
 
-  /// Current amount of water consumed in milliliters
+  /// Current amount of water consumed in milliliters (actual hydration amount)
   final int currentAmount;
+
+  /// Total amount of drinks consumed in milliliters (raw amount)
+  final int totalAmount;
 
   /// Date for this goal
   final DateTime date;
@@ -12,12 +17,17 @@ class DailyGoal {
   /// Whether the goal has been completed
   final bool isCompleted;
 
+  /// Whether this goal maintains a streak from previous days
+  final bool maintainsStreak;
+
   /// Constructor for creating a daily goal
   DailyGoal({
     required this.targetAmount,
     this.currentAmount = 0,
+    this.totalAmount = 0,
     required this.date,
     this.isCompleted = false,
+    this.maintainsStreak = false,
   });
 
   /// Get the percentage of progress towards the daily goal
@@ -32,33 +42,43 @@ class DailyGoal {
   DailyGoal copyWith({
     int? targetAmount,
     int? currentAmount,
+    int? totalAmount,
     DateTime? date,
     bool? isCompleted,
+    bool? maintainsStreak,
   }) {
     return DailyGoal(
       targetAmount: targetAmount ?? this.targetAmount,
       currentAmount: currentAmount ?? this.currentAmount,
+      totalAmount: totalAmount ?? this.totalAmount,
       date: date ?? this.date,
       isCompleted: isCompleted ?? this.isCompleted,
+      maintainsStreak: maintainsStreak ?? this.maintainsStreak,
     );
   }
 
-  /// Add a water entry amount to the current amount
-  DailyGoal addWater(int amount) {
-    final newAmount = currentAmount + amount;
+  /// Add a water entry to the goal
+  DailyGoal addWater(WaterEntry entry) {
+    final newTotal = totalAmount + entry.amount;
+    final newHydration = currentAmount + entry.hydrationAmount;
     return copyWith(
-      currentAmount: newAmount,
-      isCompleted: newAmount >= targetAmount,
+      totalAmount: newTotal,
+      currentAmount: newHydration,
+      isCompleted: newHydration >= targetAmount,
     );
   }
 
-  /// Remove a water entry amount from the current amount
-  DailyGoal removeWater(int amount) {
-    final newAmount =
-        (currentAmount - amount).clamp(0, double.infinity).toInt();
+  /// Remove a water entry from the goal
+  DailyGoal removeWater(WaterEntry entry) {
+    final newTotal =
+        (totalAmount - entry.amount).clamp(0, double.infinity).toInt();
+    final newHydration = (currentAmount - entry.hydrationAmount)
+        .clamp(0, double.infinity)
+        .toInt();
     return copyWith(
-      currentAmount: newAmount,
-      isCompleted: newAmount >= targetAmount,
+      totalAmount: newTotal,
+      currentAmount: newHydration,
+      isCompleted: newHydration >= targetAmount,
     );
   }
 
@@ -67,8 +87,10 @@ class DailyGoal {
     return {
       'targetAmount': targetAmount,
       'currentAmount': currentAmount,
+      'totalAmount': totalAmount,
       'date': date.toIso8601String(),
       'isCompleted': isCompleted,
+      'maintainsStreak': maintainsStreak,
     };
   }
 
@@ -77,8 +99,10 @@ class DailyGoal {
     return DailyGoal(
       targetAmount: json['targetAmount'] as int,
       currentAmount: json['currentAmount'] as int,
+      totalAmount: json['totalAmount'] as int? ?? json['currentAmount'] as int,
       date: DateTime.parse(json['date'] as String),
       isCompleted: json['isCompleted'] as bool,
+      maintainsStreak: json['maintainsStreak'] as bool? ?? false,
     );
   }
 }
