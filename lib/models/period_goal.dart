@@ -104,7 +104,8 @@ class PeriodGoal {
 
   /// Remove water amount from the current amount
   PeriodGoal removeWater(int amount) {
-    final newAmount = (currentAmount - amount).clamp(0, double.infinity).toInt();
+    final newAmount =
+        (currentAmount - amount).clamp(0, double.infinity).toInt();
     return copyWith(
       currentAmount: newAmount,
       isCompleted: newAmount >= targetAmount,
