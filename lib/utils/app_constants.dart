@@ -28,6 +28,15 @@ class AppConstants {
 
   // Achievement Thresholds
   static const int streakAchievementDays = 7;
+  static const int bronzeStreakDays = 7;
+  static const int silverStreakDays = 14;
+  static const int goldStreakDays = 30;
+  static const int platinumStreakDays = 90;
+
+  // Hydration Factors
+  static const double baseTemperature = 25.0; // Base temperature in Celsius
+  static const double temperatureThreshold = 5.0; // Temperature change threshold
+  static const double temperatureHydrationFactor = 0.1; // 10% increase per threshold
   static const double goalCompletionPercentage = 1.0;
 
   // Animation Durations
