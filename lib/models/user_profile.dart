@@ -71,16 +71,17 @@ class UserProfile {
   int calculateRecommendedIntake({double temperatureCelsius = 25.0}) {
     // Base calculation: 35ml per kg of body weight
     double baseIntake = weight * 35;
-    
+
     // Adjust for activity level
     baseIntake *= activityLevel.hydrationFactor;
-    
+
     // Adjust for temperature (increase intake by 10% for every 5°C above 25°C)
     if (temperatureCelsius > 25.0) {
-      final temperatureFactor = 1.0 + (0.1 * ((temperatureCelsius - 25.0) / 5.0));
+      final temperatureFactor =
+          1.0 + (0.1 * ((temperatureCelsius - 25.0) / 5.0));
       baseIntake *= temperatureFactor;
     }
-    
+
     return baseIntake.round();
   }
 
@@ -128,60 +129,6 @@ class UserProfile {
       currentStreak: json['currentStreak'] as int? ?? 0,
       longestStreak: json['longestStreak'] as int? ?? 0,
       totalGoalsAchieved: json['totalGoalsAchieved'] as int? ?? 0,
-    );
-  }
-    // Base calculation: 30ml per kg of body weight
-    double baseAmount = weight * 30;
-
-    // Adjust for activity level
-    switch (activityLevel) {
-      case ActivityLevel.sedentary:
-        baseAmount *= 1.0;
-      case ActivityLevel.lightlyActive:
-        baseAmount *= 1.1;
-      case ActivityLevel.moderatelyActive:
-        baseAmount *= 1.2;
-      case ActivityLevel.veryActive:
-        baseAmount *= 1.3;
-      case ActivityLevel.extraActive:
-        baseAmount *= 1.4;
-    }
-
-    return baseAmount.round();
-  }
-
-  /// Create a copy of this UserProfile with specified fields replaced with new values
-  UserProfile copyWith({
-    int? dailyGoal,
-    double? weight,
-    ActivityLevel? activityLevel,
-    bool? notificationsEnabled,
-  }) {
-    return UserProfile(
-      dailyGoal: dailyGoal ?? this.dailyGoal,
-      weight: weight ?? this.weight,
-      activityLevel: activityLevel ?? this.activityLevel,
-      notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
-    );
-  }
-
-  /// Convert UserProfile to a map for JSON serialization
-  Map<String, dynamic> toJson() {
-    return {
-      'dailyGoal': dailyGoal,
-      'weight': weight,
-      'activityLevel': activityLevel.index,
-      'notificationsEnabled': notificationsEnabled,
-    };
-  }
-
-  /// Create a UserProfile from a map (JSON deserialization)
-  UserProfile.fromJson(Map<String, dynamic> json) {
-    return UserProfile(
-      dailyGoal: json['dailyGoal'] as int,
-      weight: (json['weight'] as num).toDouble(),
-      activityLevel: ActivityLevel.values[json['activityLevel'] as int],
-      notificationsEnabled: json['notificationsEnabled'] as bool,
     );
   }
 }

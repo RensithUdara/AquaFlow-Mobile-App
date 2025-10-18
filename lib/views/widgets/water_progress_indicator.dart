@@ -13,6 +13,9 @@ class WaterProgressIndicator extends StatelessWidget {
   /// Current amount of water consumed
   final int currentAmount;
 
+  /// Hydration-adjusted amount (considers drink coefficients)
+  final int hydrationAmount;
+
   /// Target amount for the day
   final int targetAmount;
 
@@ -24,6 +27,7 @@ class WaterProgressIndicator extends StatelessWidget {
     super.key,
     required this.progress,
     required this.currentAmount,
+    required this.hydrationAmount,
     required this.targetAmount,
     required this.isDarkMode,
   });
@@ -100,7 +104,7 @@ class WaterProgressIndicator extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      UtilityService.formatAmount(currentAmount),
+                      UtilityService.formatAmount(hydrationAmount),
                       style:
                           Theme.of(context).textTheme.headlineMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -143,6 +147,39 @@ class WaterProgressIndicator extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
+            ),
+
+            const SizedBox(height: 8),
+            // Show raw amount vs hydration-adjusted amount and remaining
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Raw: ${UtilityService.formatAmount(currentAmount)}',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: isDarkMode
+                            ? AppColors.darkSecondaryText
+                            : AppColors.lightSecondaryText,
+                      ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Hydration: ${UtilityService.formatAmount(hydrationAmount)}',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: _getProgressColor(),
+                      ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'Remaining: ${UtilityService.formatAmount((targetAmount - hydrationAmount).clamp(0, targetAmount))}',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: isDarkMode
+                            ? AppColors.darkSecondaryText
+                            : AppColors.lightSecondaryText,
+                      ),
+                ),
+              ],
             ),
           ],
         );
