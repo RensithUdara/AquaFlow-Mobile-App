@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../controllers/notification_controller.dart';
 import '../../controllers/settings_controller.dart';
 import '../../controllers/water_tracking_controller.dart';
-import '../../controllers/history_controller.dart';
 import '../../models/user_profile.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_constants.dart';
@@ -42,7 +41,9 @@ class HomeScreen extends StatelessWidget {
 
     return Card(
       elevation: AppConstants.cardElevation,
-      color: isDark ? AppColors.darkSurfaceBackground : AppColors.lightSurfaceBackground,
+      color: isDark
+          ? AppColors.darkSurfaceBackground
+          : AppColors.lightSurfaceBackground,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -53,26 +54,47 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Text('Streak', style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 6),
-                Text('${profile.currentStreak} days', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                Text('${profile.currentStreak} days',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
-                Text('Longest: ${profile.longestStreak}d', style: Theme.of(context).textTheme.bodySmall),
+                Text('Longest: ${profile.longestStreak}d',
+                    style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
-            Container(width: 1, height: 48, color: isDark ? AppColors.darkHintText : AppColors.lightHintText),
+            Container(
+                width: 1,
+                height: 48,
+                color:
+                    isDark ? AppColors.darkHintText : AppColors.lightHintText),
             Column(
               children: [
                 Text('Weekly', style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 6),
                 // Placeholder progress; details available in History screen
-                Text('View in History', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).primaryColor)),
+                Text('View in History',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: Theme.of(context).primaryColor)),
               ],
             ),
-            Container(width: 1, height: 48, color: isDark ? AppColors.darkHintText : AppColors.lightHintText),
+            Container(
+                width: 1,
+                height: 48,
+                color:
+                    isDark ? AppColors.darkHintText : AppColors.lightHintText),
             Column(
               children: [
                 Text('Monthly', style: Theme.of(context).textTheme.bodySmall),
                 const SizedBox(height: 6),
-                Text('View in History', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).primaryColor)),
+                Text('View in History',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: Theme.of(context).primaryColor)),
               ],
             ),
           ],
@@ -139,7 +161,8 @@ class HomeScreen extends StatelessWidget {
                   decoration: const InputDecoration(
                     suffixText: '°C',
                     isDense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   ),
                   onFieldSubmitted: (value) {
                     final t = double.tryParse(value);
