@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../../controllers/notification_controller.dart';
 import '../../controllers/settings_controller.dart';
 import '../../controllers/water_tracking_controller.dart';
+import '../../controllers/history_controller.dart';
+import '../../models/user_profile.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/utility_service.dart';
@@ -34,11 +36,57 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  /// Small widget to show streaks and period progress
+  Widget _buildStreakSummary(BuildContext context, UserProfile profile) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Card(
+      elevation: AppConstants.cardElevation,
+      color: isDark ? AppColors.darkSurfaceBackground : AppColors.lightSurfaceBackground,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              children: [
+                Text('Streak', style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 6),
+                Text('${profile.currentStreak} days', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text('Longest: ${profile.longestStreak}d', style: Theme.of(context).textTheme.bodySmall),
+              ],
+            ),
+            Container(width: 1, height: 48, color: isDark ? AppColors.darkHintText : AppColors.lightHintText),
+            Column(
+              children: [
+                Text('Weekly', style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 6),
+                // Placeholder progress; details available in History screen
+                Text('View in History', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).primaryColor)),
+              ],
+            ),
+            Container(width: 1, height: 48, color: isDark ? AppColors.darkHintText : AppColors.lightHintText),
+            Column(
+              children: [
+                Text('Monthly', style: Theme.of(context).textTheme.bodySmall),
+                const SizedBox(height: 6),
+                Text('View in History', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).primaryColor)),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   /// Build daily goal section at the top
   Widget _buildDailyGoalSection(BuildContext context) {
     final waterController = context.watch<WaterTrackingController>();
     final settingsController = context.watch<SettingsController>();
     final isDarkMode = settingsController.isDarkTheme(context);
+    // Daily section doesn't compute total hydration here; progress section will compute it
 
     return Container(
       padding: const EdgeInsets.all(AppConstants.contentPadding),
@@ -71,6 +119,45 @@ class HomeScreen extends StatelessWidget {
             'Tap to start tracking your daily water intake!',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
+          const SizedBox(height: 8),
+          // Temperature input
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.thermostat_outlined, size: 18),
+              const SizedBox(width: 6),
+              Text(
+                'Temperature',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(width: 8),
+              SizedBox(
+                width: 100,
+                child: TextFormField(
+                  initialValue: AppConstants.baseTemperature.toInt().toString(),
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    suffixText: '°C',
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  ),
+                  onFieldSubmitted: (value) {
+                    final t = double.tryParse(value);
+                    if (t != null) {
+                      // Calculate recommended intake using user profile and temperature
+                      final recommended = settingsController.userProfile
+                          .calculateRecommendedIntake(temperatureCelsius: t);
+                      // Apply as today's daily goal
+                      waterController.setDailyGoal(recommended);
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          // Streak & achievements summary
+          _buildStreakSummary(context, settingsController.userProfile),
           const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () => _navigateToAddWater(context),
@@ -86,6 +173,12 @@ class HomeScreen extends StatelessWidget {
     final waterController = context.watch<WaterTrackingController>();
     final settingsController = context.watch<SettingsController>();
     final isDarkMode = settingsController.isDarkTheme(context);
+    // Compute hydration amount for progress display
+    final entries = waterController.entries;
+    int hydrationAmount = 0;
+    for (final e in entries) {
+      hydrationAmount += e.hydrationAmount;
+    }
 
     return Container(
       // Added padding at the bottom to prevent overflow
@@ -110,6 +203,7 @@ class HomeScreen extends StatelessWidget {
             child: WaterProgressIndicator(
               progress: waterController.progressPercentage,
               currentAmount: waterController.totalAmount,
+              hydrationAmount: hydrationAmount,
               targetAmount: waterController.dailyGoal?.targetAmount ??
                   settingsController.userProfile.dailyGoal,
               isDarkMode: isDarkMode,
