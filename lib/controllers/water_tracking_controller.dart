@@ -90,7 +90,7 @@ class WaterTrackingController with ChangeNotifier {
 
     // Update daily goal if it exists
     if (_dailyGoal != null) {
-      _dailyGoal = _dailyGoal!.addWater(amount);
+      _dailyGoal = _dailyGoal!.addWater(entry);
       await _storageService.saveDailyGoal(_dailyGoal!);
     }
 
@@ -118,9 +118,19 @@ class WaterTrackingController with ChangeNotifier {
     if (_dailyGoal != null && amount != null && amount != oldAmount) {
       final difference = amount - oldAmount;
       if (difference > 0) {
-        _dailyGoal = _dailyGoal!.addWater(difference);
+        final entry = WaterEntry(
+          amount: difference,
+          timestamp: updatedEntry.timestamp,
+          drinkType: updatedEntry.drinkType,
+        );
+        _dailyGoal = _dailyGoal!.addWater(entry);
       } else {
-        _dailyGoal = _dailyGoal!.removeWater(difference.abs());
+        final entry = WaterEntry(
+          amount: difference.abs(),
+          timestamp: updatedEntry.timestamp,
+          drinkType: updatedEntry.drinkType,
+        );
+        _dailyGoal = _dailyGoal!.removeWater(entry);
       }
       await _storageService.saveDailyGoal(_dailyGoal!);
     }
@@ -134,13 +144,13 @@ class WaterTrackingController with ChangeNotifier {
     final index = _entries.indexWhere((entry) => entry.id == id);
     if (index == -1) return;
 
-    final removedAmount = _entries[index].amount;
+    final removedEntry = _entries[index];
 
     _entries.removeAt(index);
 
     // Update daily goal if it exists
     if (_dailyGoal != null) {
-      _dailyGoal = _dailyGoal!.removeWater(removedAmount);
+      _dailyGoal = _dailyGoal!.removeWater(removedEntry);
       await _storageService.saveDailyGoal(_dailyGoal!);
     }
 

@@ -93,7 +93,6 @@ class HistoryController with ChangeNotifier {
     DateTime? bestDay;
 
     for (final date in dates) {
-      final dateKey = UtilityService.startOfDay(date);
       final amount = getAmountForDate(date);
 
       if (amount > 0) {
