@@ -71,16 +71,17 @@ class UserProfile {
   int calculateRecommendedIntake({double temperatureCelsius = 25.0}) {
     // Base calculation: 35ml per kg of body weight
     double baseIntake = weight * 35;
-    
+
     // Adjust for activity level
     baseIntake *= activityLevel.hydrationFactor;
-    
+
     // Adjust for temperature (increase intake by 10% for every 5°C above 25°C)
     if (temperatureCelsius > 25.0) {
-      final temperatureFactor = 1.0 + (0.1 * ((temperatureCelsius - 25.0) / 5.0));
+      final temperatureFactor =
+          1.0 + (0.1 * ((temperatureCelsius - 25.0) / 5.0));
       baseIntake *= temperatureFactor;
     }
-    
+
     return baseIntake.round();
   }
 
