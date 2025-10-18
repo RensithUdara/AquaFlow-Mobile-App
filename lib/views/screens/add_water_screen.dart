@@ -7,6 +7,7 @@ import '../../controllers/water_tracking_controller.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_constants.dart';
 import '../../utils/utility_service.dart';
+import '../../models/drink_type.dart';
 
 /// Screen for adding water entries
 class AddWaterScreen extends StatefulWidget {
@@ -319,6 +320,28 @@ class _AddWaterScreenState extends State<AddWaterScreen> {
             );
           }).toList(),
         ),
+        const SizedBox(height: 12),
+        // Show hydration impact preview
+        Builder(builder: (context) {
+          final drink = DrinkType.getByName(_selectedDrinkType);
+          final effective = ( _selectedAmount * drink.hydrationCoefficient ).round();
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Hydration impact: ',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              Text(
+                '${UtilityService.formatAmount(effective)} (${(drink.hydrationCoefficient * 100).toStringAsFixed(0)}%)',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: drink.color,
+                    ),
+              ),
+            ],
+          );
+        }),
       ],
     );
   }
