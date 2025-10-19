@@ -7,7 +7,6 @@ import '../models/hydration_insight.dart';
 import '../models/water_analytics.dart';
 import '../models/water_entry.dart';
 import '../services/storage_service.dart';
-import '../utils/app_constants.dart';
 
 /// Service for analyzing water consumption data and generating insights
 class AnalyticsService {
@@ -19,8 +18,7 @@ class AnalyticsService {
   /// Generate analytics for a given time period
   Future<WaterAnalytics> generateAnalytics(DateTime start, DateTime end) async {
     final entries = await _storageService.getWaterEntriesForPeriod(start, end);
-    final dailyGoals =
-        await _storageService.getDailyGoalsForPeriod(start, end);
+    final dailyGoals = await _storageService.getDailyGoalsForPeriod(start, end);
 
     // Calculate basic statistics
     final totalConsumption =
@@ -33,14 +31,13 @@ class AnalyticsService {
     final peakHour = _calculatePeakHydrationHour(entries);
 
     // Calculate goal completion rate
-    final completedGoals =
-        dailyGoals.where((goal) => goal.isCompleted).length;
+    final completedGoals = dailyGoals.where((goal) => goal.isCompleted).length;
     final goalCompletionRate =
         dailyGoals.isNotEmpty ? completedGoals / dailyGoals.length : 0.0;
 
     // Calculate consumption variance
-    final consumptionVariance = _calculateConsumptionVariance(
-        entries, averageDailyConsumption.round());
+    final consumptionVariance =
+        _calculateConsumptionVariance(entries, averageDailyConsumption.round());
 
     // Find max streak and most common drink type
     final maxStreak = _calculateMaxStreak(dailyGoals);
@@ -164,13 +161,11 @@ class AnalyticsService {
     for (final entry in entries) {
       hourlyConsumption[entry.timestamp.hour] += entry.hydrationAmount;
     }
-    return hourlyConsumption.indexOf(
-        hourlyConsumption.reduce(math.max));
+    return hourlyConsumption.indexOf(hourlyConsumption.reduce(math.max));
   }
 
   /// Calculate variance in daily consumption
-  double _calculateConsumptionVariance(
-      List<WaterEntry> entries, int average) {
+  double _calculateConsumptionVariance(List<WaterEntry> entries, int average) {
     if (entries.isEmpty) return 0.0;
 
     final dailyTotals = <int>[];
@@ -226,13 +221,10 @@ class AnalyticsService {
 
     final drinkCounts = <String, int>{};
     for (final entry in entries) {
-      drinkCounts[entry.drinkType] =
-          (drinkCounts[entry.drinkType] ?? 0) + 1;
+      drinkCounts[entry.drinkType] = (drinkCounts[entry.drinkType] ?? 0) + 1;
     }
 
-    return drinkCounts.entries
-        .reduce((a, b) => a.value > b.value ? a : b)
-        .key;
+    return drinkCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key;
   }
 
   /// Export analytics data for external use
@@ -246,8 +238,7 @@ class AnalyticsService {
         'totalConsumption': analytics.totalConsumption,
         'averageDaily': analytics.averageDailyConsumption.round(),
         'daysTracked': analytics.daysTracked,
-        'goalCompletionRate':
-            (analytics.goalCompletionRate * 100).round(),
+        'goalCompletionRate': (analytics.goalCompletionRate * 100).round(),
         'maxStreak': analytics.maxStreak,
       },
       'patterns': {
