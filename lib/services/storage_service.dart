@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,7 +6,6 @@ import '../models/daily_goal.dart';
 import '../models/notification_settings.dart';
 import '../models/user_profile.dart';
 import '../models/water_entry.dart';
-import '../models/water_analytics.dart';
 import '../utils/app_constants.dart';
 
 /// Service for handling local storage operations
