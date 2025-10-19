@@ -11,6 +11,7 @@ class AppConstants {
   static const String periodGoalKey = 'period_goal';
   static const String waterEntriesKey = 'water_entries';
   static const String themePreferenceKey = 'theme_preference';
+  static const String analyticsKey = 'water_analytics';
 
   // Default Values
   static const int defaultDailyGoalMl = 2500;

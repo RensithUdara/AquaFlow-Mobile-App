@@ -137,6 +137,59 @@ class StorageService {
     return dates;
   }
 
+  /// Get all water entries between start and end dates
+  Future<List<WaterEntry>> getWaterEntriesForPeriod(
+      DateTime start, DateTime end) async {
+    final entries = <WaterEntry>[];
+    var current = start;
+
+    while (!current.isAfter(end)) {
+      entries.addAll(getWaterEntries(current));
+      current = current.add(const Duration(days: 1));
+    }
+
+    return entries;
+  }
+
+  /// Get all daily goals between start and end dates
+  Future<List<DailyGoal>> getDailyGoalsForPeriod(
+      DateTime start, DateTime end) async {
+    final goals = <DailyGoal>[];
+    var current = start;
+
+    while (!current.isAfter(end)) {
+      final goal = getDailyGoal(current);
+      if (goal != null) {
+        goals.add(goal);
+      }
+      current = current.add(const Duration(days: 1));
+    }
+
+    return goals;
+  }
+
+  /// Save analytics data to local storage
+  Future<bool> saveAnalytics(WaterAnalytics analytics) async {
+    final key =
+        '${AppConstants.analyticsKey}_${_formatDate(analytics.startDate)}_${_formatDate(analytics.endDate)}';
+    return await _prefs.setString(key, jsonEncode(analytics.toJson()));
+  }
+
+  /// Get analytics data from local storage
+  WaterAnalytics? getAnalytics(DateTime start, DateTime end) {
+    final key =
+        '${AppConstants.analyticsKey}_${_formatDate(start)}_${_formatDate(end)}';
+    final analyticsString = _prefs.getString(key);
+    if (analyticsString != null) {
+      try {
+        return WaterAnalytics.fromJson(jsonDecode(analyticsString));
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
+
   /// Clear all data from local storage
   Future<bool> clearAllData() async {
     return await _prefs.clear();
@@ -144,6 +197,6 @@ class StorageService {
 
   /// Helper method to format date as string
   String _formatDate(DateTime date) {
-    return '${date.year}_${date.month}_${date.day}';
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
 }
