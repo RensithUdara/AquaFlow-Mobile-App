@@ -170,13 +170,15 @@ class StorageService {
 
   /// Save analytics data to local storage
   Future<bool> saveAnalytics(WaterAnalytics analytics) async {
-    final key = '${AppConstants.analyticsKey}_${_formatDate(analytics.startDate)}_${_formatDate(analytics.endDate)}';
+    final key =
+        '${AppConstants.analyticsKey}_${_formatDate(analytics.startDate)}_${_formatDate(analytics.endDate)}';
     return await _prefs.setString(key, jsonEncode(analytics.toJson()));
   }
 
   /// Get analytics data from local storage
   WaterAnalytics? getAnalytics(DateTime start, DateTime end) {
-    final key = '${AppConstants.analyticsKey}_${_formatDate(start)}_${_formatDate(end)}';
+    final key =
+        '${AppConstants.analyticsKey}_${_formatDate(start)}_${_formatDate(end)}';
     final analyticsString = _prefs.getString(key);
     if (analyticsString != null) {
       try {
