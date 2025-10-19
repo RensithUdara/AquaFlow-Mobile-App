@@ -39,8 +39,7 @@ class LeaderboardEntry {
   });
 
   /// Get rank change (positive for improvement, negative for decline)
-  int? get rankChange =>
-      previousRank != null ? previousRank! - rank : null;
+  int? get rankChange => previousRank != null ? previousRank! - rank : null;
 
   /// Convert leaderboard entry to a map for JSON serialization
   Map<String, dynamic> toJson() {
