@@ -97,6 +97,8 @@ class UserProfile {
 
   /// Create a copy of this UserProfile with specified fields replaced with new values
   UserProfile copyWith({
+    String? id,
+    String? displayName,
     int? dailyGoal,
     double? weight,
     ActivityLevel? activityLevel,
@@ -106,6 +108,8 @@ class UserProfile {
     int? totalGoalsAchieved,
   }) {
     return UserProfile(
+      id: id ?? this.id,
+      displayName: displayName ?? this.displayName,
       dailyGoal: dailyGoal ?? this.dailyGoal,
       weight: weight ?? this.weight,
       activityLevel: activityLevel ?? this.activityLevel,
@@ -119,6 +123,8 @@ class UserProfile {
   /// Convert UserProfile to a map for JSON serialization
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
+      'displayName': displayName,
       'dailyGoal': dailyGoal,
       'weight': weight,
       'activityLevel': activityLevel.index,
@@ -132,6 +138,8 @@ class UserProfile {
   /// Create a UserProfile from a map (JSON deserialization)
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
+      id: json['id'] as String,
+      displayName: json['displayName'] as String,
       dailyGoal: json['dailyGoal'] as int,
       weight: (json['weight'] as num).toDouble(),
       activityLevel: ActivityLevel.values[json['activityLevel'] as int],
