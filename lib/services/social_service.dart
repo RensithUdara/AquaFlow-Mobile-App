@@ -1,11 +1,8 @@
-import 'package:uuid/uuid.dart';
-
 import '../models/friend_connection.dart';
 import '../models/hydration_challenge.dart';
 import '../models/leaderboard.dart';
 import '../models/social.dart';
 import '../services/storage_service.dart';
-import '../utils/app_constants.dart';
 
 /// Service for managing social interactions and features
 class SocialService {
@@ -32,7 +29,8 @@ class SocialService {
   }
 
   /// Accept a friend request
-  Future<FriendConnection> acceptFriendRequest(FriendConnection connection) async {
+  Future<FriendConnection> acceptFriendRequest(
+      FriendConnection connection) async {
     final updatedConnection = FriendConnection(
       requesterId: connection.requesterId,
       receiverId: connection.receiverId,
@@ -46,7 +44,8 @@ class SocialService {
   }
 
   /// Decline a friend request
-  Future<FriendConnection> declineFriendRequest(FriendConnection connection) async {
+  Future<FriendConnection> declineFriendRequest(
+      FriendConnection connection) async {
     final updatedConnection = FriendConnection(
       requesterId: connection.requesterId,
       receiverId: connection.receiverId,
@@ -237,7 +236,8 @@ class SocialService {
     // TODO: Implement with backend API
   }
 
-  Future<FriendConnection?> _getFriendConnection(String userId1, String userId2) async {
+  Future<FriendConnection?> _getFriendConnection(
+      String userId1, String userId2) async {
     // TODO: Implement with backend API
     return null;
   }
