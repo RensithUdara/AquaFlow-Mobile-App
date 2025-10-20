@@ -175,4 +175,15 @@ class HealthExportService {
         return 'application/json';
     }
   }
+
+  /// Get the start and end dates from a list of entries
+  (DateTime, DateTime) _getDateRange(List<WaterEntry> entries) {
+    if (entries.isEmpty) {
+      final now = DateTime.now();
+      return (now, now);
+    }
+
+    entries.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+    return (entries.first.timestamp, entries.last.timestamp);
+  }
 }
