@@ -102,9 +102,10 @@ class HealthExportService {
             })
         .toList();
 
+    final dateRange = _getDateRange(entries);
     return {
-      'minStartTimeNs': start.millisecondsSinceEpoch * 1000000,
-      'maxEndTimeNs': end.millisecondsSinceEpoch * 1000000,
+      'minStartTimeNs': dateRange.$1.millisecondsSinceEpoch * 1000000,
+      'maxEndTimeNs': dateRange.$2.millisecondsSinceEpoch * 1000000,
       'dataSourceId':
           'raw:com.google.hydration:${AppConstants.appName}:android-app',
       'points': dataPoints,
