@@ -72,7 +72,7 @@ class AnalyticsService {
       insights.add(HydrationInsight(
         id: 'consistency_${DateTime.now().millisecondsSinceEpoch}',
         type: InsightType.recommendation,
-        category: InsightCategory.pattern,
+        category: InsightCategory.schedule,
         title: 'Improve Your Consistency',
         description:
             'Your daily water intake varies significantly. Try to maintain a more consistent drinking schedule.',
