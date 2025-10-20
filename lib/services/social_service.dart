@@ -18,7 +18,7 @@ class SocialService {
     final currentUser = _storageService.getUserProfile();
 
     final connection = FriendConnection(
-      requesterId: currentUser.userId,
+      requesterId: currentUser.id,
       receiverId: receiverId,
       status: FriendRequestStatus.pending,
       requestedAt: DateTime.now(),
@@ -76,7 +76,7 @@ class SocialService {
       title: title,
       description: description,
       type: type,
-      creatorId: currentUser.userId,
+      creatorId: currentUser.id,
       participantIds: participantIds,
       targetValue: targetValue,
       startDate: startDate,
