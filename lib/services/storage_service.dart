@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/daily_goal.dart';
 import '../models/notification_settings.dart';
 import '../models/user_profile.dart';
+import '../models/water_analytics.dart';
 import '../models/water_entry.dart';
 import '../utils/app_constants.dart';
 
