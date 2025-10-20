@@ -25,6 +25,12 @@ enum ActivityLevel {
 
 /// Model for representing user profile information
 class UserProfile {
+  /// Unique identifier for the user
+  final String id;
+  
+  /// User's display name
+  final String displayName;
+  
   /// User's daily water intake goal in milliliters
   final int dailyGoal;
 
