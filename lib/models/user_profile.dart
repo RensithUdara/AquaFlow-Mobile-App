@@ -54,6 +54,8 @@ class UserProfile {
 
   /// Constructor for creating a user profile
   UserProfile({
+    required this.id,
+    required this.displayName,
     required this.dailyGoal,
     required this.weight,
     required this.activityLevel,
@@ -66,6 +68,8 @@ class UserProfile {
   /// Default constructor with recommended values
   factory UserProfile.defaultProfile() {
     return UserProfile(
+      id: 'default',
+      displayName: 'New User',
       dailyGoal: 2500, // Default 2.5L
       weight: 70.0, // Default 70kg
       activityLevel: ActivityLevel.moderatelyActive,
