@@ -76,7 +76,7 @@ class SocialService {
       title: title,
       description: description,
       type: type,
-      creatorId: currentUser.userId,
+      creatorId: currentUser.id,
       participantIds: participantIds,
       targetValue: targetValue,
       startDate: startDate,
