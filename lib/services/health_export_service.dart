@@ -16,7 +16,7 @@ class HealthExportService {
   Future<HealthData> exportToAppleHealth(DateTime start, DateTime end) async {
     final entries = await _storageService.getWaterEntriesForPeriod(start, end);
     final waterData = _formatForAppleHealth(entries);
-    
+
     return HealthData(
       startDate: start,
       endDate: end,
@@ -30,7 +30,7 @@ class HealthExportService {
   Future<HealthData> exportToGoogleFit(DateTime start, DateTime end) async {
     final entries = await _storageService.getWaterEntriesForPeriod(start, end);
     final waterData = _formatForGoogleFit(entries);
-    
+
     return HealthData(
       startDate: start,
       endDate: end,
@@ -44,7 +44,7 @@ class HealthExportService {
   Future<HealthData> exportToCSV(DateTime start, DateTime end) async {
     final entries = await _storageService.getWaterEntriesForPeriod(start, end);
     final waterData = _formatForCSV(entries);
-    
+
     return HealthData(
       startDate: start,
       endDate: end,
@@ -56,18 +56,20 @@ class HealthExportService {
 
   /// Format water entries for Apple Health
   Map<String, dynamic> _formatForAppleHealth(List<WaterEntry> entries) {
-    final samples = entries.map((entry) => {
-      'type': 'HKQuantityTypeIdentifierDietaryWater',
-      'amount': entry.amount / 1000.0, // Convert to liters
-      'unit': 'L',
-      'date': entry.timestamp.toIso8601String(),
-      'sourceApp': AppConstants.appName,
-      'sourceName': 'AquaFlow Water Tracking',
-      'metadata': {
-        'drinkType': entry.drinkType,
-        'hydrationCoefficient': entry.hydrationAmount / entry.amount,
-      }
-    }).toList();
+    final samples = entries
+        .map((entry) => {
+              'type': 'HKQuantityTypeIdentifierDietaryWater',
+              'amount': entry.amount / 1000.0, // Convert to liters
+              'unit': 'L',
+              'date': entry.timestamp.toIso8601String(),
+              'sourceApp': AppConstants.appName,
+              'sourceName': 'AquaFlow Water Tracking',
+              'metadata': {
+                'drinkType': entry.drinkType,
+                'hydrationCoefficient': entry.hydrationAmount / entry.amount,
+              }
+            })
+        .toList();
 
     return {
       'workoutData': samples,
@@ -78,23 +80,35 @@ class HealthExportService {
 
   /// Format water entries for Google Fit
   Map<String, dynamic> _formatForGoogleFit(List<WaterEntry> entries) {
-    final dataPoints = entries.map((entry) => {
-      'dataTypeName': 'com.google.hydration',
-      'startTimeNanos': entry.timestamp.millisecondsSinceEpoch * 1000000,
-      'endTimeNanos': entry.timestamp.millisecondsSinceEpoch * 1000000,
-      'value': [{
-        'fpVal': entry.amount / 1000.0, // Convert to liters
-        'mapVal': [
-          {'key': 'drinkType', 'value': {'stringVal': entry.drinkType}},
-          {'key': 'hydrationCoefficient', 'value': {'fpVal': entry.hydrationAmount / entry.amount}},
-        ]
-      }]
-    }).toList();
+    final dataPoints = entries
+        .map((entry) => {
+              'dataTypeName': 'com.google.hydration',
+              'startTimeNanos':
+                  entry.timestamp.millisecondsSinceEpoch * 1000000,
+              'endTimeNanos': entry.timestamp.millisecondsSinceEpoch * 1000000,
+              'value': [
+                {
+                  'fpVal': entry.amount / 1000.0, // Convert to liters
+                  'mapVal': [
+                    {
+                      'key': 'drinkType',
+                      'value': {'stringVal': entry.drinkType}
+                    },
+                    {
+                      'key': 'hydrationCoefficient',
+                      'value': {'fpVal': entry.hydrationAmount / entry.amount}
+                    },
+                  ]
+                }
+              ]
+            })
+        .toList();
 
     return {
       'minStartTimeNs': start.millisecondsSinceEpoch * 1000000,
       'maxEndTimeNs': end.millisecondsSinceEpoch * 1000000,
-      'dataSourceId': 'raw:com.google.hydration:${AppConstants.appName}:android-app',
+      'dataSourceId':
+          'raw:com.google.hydration:${AppConstants.appName}:android-app',
       'points': dataPoints,
     };
   }
