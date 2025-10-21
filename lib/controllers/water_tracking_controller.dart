@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 import '../models/daily_goal.dart';
+import '../models/daily_goal.dart';
+import '../models/user_profile.dart';
 import '../models/water_entry.dart';
 import '../services/storage_service.dart';
 import '../utils/utility_service.dart';
@@ -17,6 +19,9 @@ class WaterTrackingController with ChangeNotifier {
 
   /// Current selected date
   DateTime _selectedDate = DateTime.now();
+
+  /// User profile for tracking streaks and achievements
+  UserProfile? _userProfile;
 
   /// Constructor for water tracking controller
   WaterTrackingController(this._storageService) {
@@ -168,5 +173,79 @@ class WaterTrackingController with ChangeNotifier {
   Future<void> _loadData() async {
     _entries = _storageService.getWaterEntries(_selectedDate);
     _dailyGoal = _storageService.getDailyGoal(_selectedDate);
+    _userProfile = await _storageService.getUserProfile();
+    await _checkAndUpdateStreak();
+  }
+
+  /// Check and update the user's streak status
+  Future<void> _checkAndUpdateStreak() async {
+    if (_userProfile == null || _dailyGoal == null) return;
+
+    final now = DateTime.now();
+    final yesterday = now.subtract(const Duration(days: 1));
+    final todayGoal = _storageService.getDailyGoal(now);
+    final yesterdayGoal = _storageService.getDailyGoal(yesterday);
+
+    // Calculate new streak status
+    int newStreak = _userProfile!.currentStreak;
+    bool maintainStreak = false;
+
+    // Check if yesterday's goal was completed
+    if (yesterdayGoal?.isCompleted ?? false) {
+      maintainStreak = true;
+    }
+
+    // Check if today's goal is completed
+    if (todayGoal?.isCompleted ?? false) {
+      if (maintainStreak) {
+        // Increment streak if maintaining
+        newStreak++;
+      } else {
+        // Start new streak
+        newStreak = 1;
+      }
+    } else if (!maintainStreak) {
+      // Break streak if neither yesterday nor today is completed
+      newStreak = 0;
+    }
+
+    // Update user profile if streak changed
+    if (newStreak != _userProfile!.currentStreak) {
+      final newLongestStreak = newStreak > _userProfile!.longestStreak
+          ? newStreak
+          : _userProfile!.longestStreak;
+
+      _userProfile = _userProfile!.copyWith(
+        currentStreak: newStreak,
+        longestStreak: newLongestStreak,
+        totalGoalsAchieved: todayGoal?.isCompleted ?? false
+            ? _userProfile!.totalGoalsAchieved + 1
+            : _userProfile!.totalGoalsAchieved,
+      );
+
+      await _storageService.saveUserProfile(_userProfile!);
+      notifyListeners();
+    }
+  }
+
+  /// Check if the streak achievement thresholds are met
+  bool hasAchievedStreakMilestone(int days) {
+    return _userProfile?.longestStreak >= days;
+  }
+
+  /// Get the current achievement level based on streak
+  String? getCurrentStreakAchievement() {
+    if (_userProfile == null) return null;
+
+    if (_userProfile!.longestStreak >= AppConstants.platinumStreakDays) {
+      return 'Platinum';
+    } else if (_userProfile!.longestStreak >= AppConstants.goldStreakDays) {
+      return 'Gold';
+    } else if (_userProfile!.longestStreak >= AppConstants.silverStreakDays) {
+      return 'Silver';
+    } else if (_userProfile!.longestStreak >= AppConstants.bronzeStreakDays) {
+      return 'Bronze';
+    }
+    return null;
   }
 }
