@@ -4,7 +4,6 @@ import '../models/daily_goal.dart';
 import '../models/user_profile.dart';
 import '../models/water_entry.dart';
 import '../services/storage_service.dart';
-import '../utils/app_constants.dart';
 import '../utils/utility_service.dart';
 
 /// Controller for managing water tracking functionality
