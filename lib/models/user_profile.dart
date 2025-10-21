@@ -1,25 +1,34 @@
 /// Enum to represent user activity levels
 enum ActivityLevel {
-  sedentary,
-  lightlyActive,
-  moderatelyActive,
-  veryActive,
-  extraActive;
+  sedentary(baseFactor: 1.0, extraHeatFactor: 0.1),
+  lightlyActive(baseFactor: 1.2, extraHeatFactor: 0.15),
+  moderatelyActive(baseFactor: 1.4, extraHeatFactor: 0.2),
+  veryActive(baseFactor: 1.6, extraHeatFactor: 0.25),
+  extraActive(baseFactor: 1.8, extraHeatFactor: 0.3);
 
-  /// Get activity level factor for hydration calculation
-  double get hydrationFactor {
-    switch (this) {
-      case ActivityLevel.sedentary:
-        return 1.0;
-      case ActivityLevel.lightlyActive:
-        return 1.2;
-      case ActivityLevel.moderatelyActive:
-        return 1.4;
-      case ActivityLevel.veryActive:
-        return 1.6;
-      case ActivityLevel.extraActive:
-        return 1.8;
+  const ActivityLevel({
+    required this.baseFactor,
+    required this.extraHeatFactor,
+  });
+
+  final double baseFactor;
+  final double extraHeatFactor;
+
+  /// Get activity level factor for hydration calculation considering temperature
+  double getHydrationFactor(double temperatureCelsius) {
+    // Base hydration factor
+    double factor = baseFactor;
+
+    // Add extra hydration need for high temperatures (above 25°C)
+    if (temperatureCelsius > 25) {
+      // Calculate additional factor based on how much above 25°C
+      double tempDiff = temperatureCelsius - 25;
+      factor += (extraHeatFactor *
+          tempDiff /
+          10); // Gradual increase with temperature
     }
+
+    return factor;
   }
 }
 
@@ -82,13 +91,8 @@ class UserProfile {
     // Base calculation: 35ml per kg of body weight
     double baseIntake = weight * 35;
 
-    // Adjust for activity level
-    baseIntake *= activityLevel.hydrationFactor;
-
-    // Adjust for temperature (increase intake by 10% for every 5°C above 25°C)
-    if (temperatureCelsius > 25.0) {
-      final temperatureFactor =
-          1.0 + (0.1 * ((temperatureCelsius - 25.0) / 5.0));
+    // Adjust for activity level and temperature
+    baseIntake *= activityLevel.getHydrationFactor(temperatureCelsius);
       baseIntake *= temperatureFactor;
     }
 
@@ -136,7 +140,7 @@ class UserProfile {
   }
 
   /// Create a UserProfile from a map (JSON deserialization)
-  factory UserProfile.fromJson(Map<String, dynamic> json) {
+  UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
       id: json['id'] as String,
       displayName: json['displayName'] as String,
