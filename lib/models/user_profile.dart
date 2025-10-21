@@ -73,7 +73,7 @@ class UserProfile {
 
   /// Total number of daily goals achieved (total successful days)
   final int totalGoalsAchieved;
-    required this.id,
+    this.id,
     required this.displayName,
     required this.dailyGoal,
     required this.weight,
@@ -85,7 +85,7 @@ class UserProfile {
   });
 
   /// Default constructor with recommended values
-  factory UserProfile.defaultProfile() {
+  UserProfile.defaultProfile() {
     return UserProfile(
       id: 'default',
       displayName: 'New User',
