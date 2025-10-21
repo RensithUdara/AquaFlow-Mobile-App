@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 
 import '../models/daily_goal.dart';
+import '../models/user_profile.dart';
 import '../models/water_entry.dart';
 import '../services/storage_service.dart';
+import '../utils/app_constants.dart';
 import '../utils/utility_service.dart';
 
 /// Controller for managing water tracking functionality
@@ -17,6 +19,9 @@ class WaterTrackingController with ChangeNotifier {
 
   /// Current selected date
   DateTime _selectedDate = DateTime.now();
+
+  /// User profile for tracking streaks and achievements
+  UserProfile? _userProfile;
 
   /// Constructor for water tracking controller
   WaterTrackingController(this._storageService) {
