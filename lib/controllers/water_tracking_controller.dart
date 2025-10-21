@@ -235,7 +235,7 @@ class WaterTrackingController with ChangeNotifier {
   /// Get the current achievement level based on streak
   String? getCurrentStreakAchievement() {
     if (_userProfile == null) return null;
-    
+
     if (_userProfile!.longestStreak >= AppConstants.platinumStreakDays) {
       return 'Platinum';
     } else if (_userProfile!.longestStreak >= AppConstants.goldStreakDays) {
