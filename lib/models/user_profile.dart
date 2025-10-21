@@ -71,18 +71,9 @@ class UserProfile {
   /// Longest streak achieved
   final int longestStreak;
 
-  /// Total number of daily goals achieved
+  /// Total number of daily goals achieved (total successful days)
   final int totalGoalsAchieved;
-
-  /// Total number of daily goals achieved
-  final int totalGoalsAchieved;
-
-  /// Total days where goal was achieved
-  final int totalGoalsAchieved;
-
-  /// Constructor for creating a user profile
-  UserProfile({
-    required this.id,
+    this.id,
     required this.displayName,
     required this.dailyGoal,
     required this.weight,
@@ -94,7 +85,7 @@ class UserProfile {
   });
 
   /// Default constructor with recommended values
-  factory UserProfile.defaultProfile() {
+  UserProfile.defaultProfile() {
     return UserProfile(
       id: 'default',
       displayName: 'New User',
@@ -112,8 +103,6 @@ class UserProfile {
 
     // Adjust for activity level and temperature
     baseIntake *= activityLevel.getHydrationFactor(temperatureCelsius);
-      baseIntake *= temperatureFactor;
-    }
 
     return baseIntake.round();
   }
