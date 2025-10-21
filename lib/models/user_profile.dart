@@ -71,17 +71,8 @@ class UserProfile {
   /// Longest streak achieved
   final int longestStreak;
 
-  /// Total number of daily goals achieved
+  /// Total number of daily goals achieved (total successful days)
   final int totalGoalsAchieved;
-
-  /// Total number of daily goals achieved
-  final int totalGoalsAchieved;
-
-  /// Total days where goal was achieved
-  final int totalGoalsAchieved;
-
-  /// Constructor for creating a user profile
-  UserProfile({
     required this.id,
     required this.displayName,
     required this.dailyGoal,
