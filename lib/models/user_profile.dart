@@ -1,52 +1,30 @@
 /// Enum to represent user activity levels
 enum ActivityLevel {
-  sedentary(baseFactor: 1.0, extraHeatFactor: 0.1),
-  lightlyActive(baseFactor: 1.2, extraHeatFactor: 0.15),
-  moderatelyActive(baseFactor: 1.4, extraHeatFactor: 0.2),
-  veryActive(baseFactor: 1.6, extraHeatFactor: 0.25),
-  extraActive(baseFactor: 1.8, extraHeatFactor: 0.3);
+  sedentary,
+  lightlyActive,
+  moderatelyActive,
+  veryActive,
+  extraActive;
 
-  const ActivityLevel({
-    required this.baseFactor,
-    required this.extraHeatFactor,
-  });
-
-  final double baseFactor;
-  final double extraHeatFactor;
-
-  /// Get activity level factor for hydration calculation considering temperature
-  double getHydrationFactor(double temperatureCelsius) {
-    // Base hydration factor
-    double factor = baseFactor;
-
-    // Add extra hydration need for high temperatures (above 25°C)
-    if (temperatureCelsius > 25) {
-      // Calculate additional factor based on how much above 25°C
-      double tempDiff = temperatureCelsius - 25;
-      factor += (extraHeatFactor *
-          tempDiff /
-          10); // Gradual increase with temperature
+  /// Get activity level factor for hydration calculation
+  double get hydrationFactor {
+    switch (this) {
+      case ActivityLevel.sedentary:
+        return 1.0;
+      case ActivityLevel.lightlyActive:
+        return 1.2;
+      case ActivityLevel.moderatelyActive:
+        return 1.4;
+      case ActivityLevel.veryActive:
+        return 1.6;
+      case ActivityLevel.extraActive:
+        return 1.8;
     }
-
-    return factor;
   }
 }
 
 /// Model for representing user profile information
 class UserProfile {
-  /// Constructor for UserProfile
-  const UserProfile({
-    required this.id,
-    required this.displayName,
-    required this.dailyGoal,
-    required this.weight,
-    required this.activityLevel,
-    required this.notificationsEnabled,
-    this.currentStreak = 0,
-    this.longestStreak = 0,
-    this.totalGoalsAchieved = 0,
-  });
-
   /// Unique identifier for the user
   final String id;
 
@@ -71,9 +49,12 @@ class UserProfile {
   /// Longest streak achieved
   final int longestStreak;
 
-  /// Total number of daily goals achieved (total successful days)
+  /// Total days where goal was achieved
   final int totalGoalsAchieved;
-    this.id,
+
+  /// Constructor for creating a user profile
+  UserProfile({
+    required this.id,
     required this.displayName,
     required this.dailyGoal,
     required this.weight,
@@ -85,7 +66,7 @@ class UserProfile {
   });
 
   /// Default constructor with recommended values
-  UserProfile.defaultProfile() {
+  factory UserProfile.defaultProfile() {
     return UserProfile(
       id: 'default',
       displayName: 'New User',
@@ -101,8 +82,15 @@ class UserProfile {
     // Base calculation: 35ml per kg of body weight
     double baseIntake = weight * 35;
 
-    // Adjust for activity level and temperature
-    baseIntake *= activityLevel.getHydrationFactor(temperatureCelsius);
+    // Adjust for activity level
+    baseIntake *= activityLevel.hydrationFactor;
+
+    // Adjust for temperature (increase intake by 10% for every 5°C above 25°C)
+    if (temperatureCelsius > 25.0) {
+      final temperatureFactor =
+          1.0 + (0.1 * ((temperatureCelsius - 25.0) / 5.0));
+      baseIntake *= temperatureFactor;
+    }
 
     return baseIntake.round();
   }
@@ -148,7 +136,7 @@ class UserProfile {
   }
 
   /// Create a UserProfile from a map (JSON deserialization)
-  UserProfile.fromJson(Map<String, dynamic> json) {
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
       id: json['id'] as String,
       displayName: json['displayName'] as String,
