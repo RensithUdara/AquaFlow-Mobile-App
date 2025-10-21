@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../models/daily_goal.dart';
+import '../models/daily_goal.dart';
 import '../models/user_profile.dart';
 import '../models/water_entry.dart';
 import '../services/storage_service.dart';
