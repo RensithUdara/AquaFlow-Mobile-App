@@ -91,13 +91,8 @@ class UserProfile {
     // Base calculation: 35ml per kg of body weight
     double baseIntake = weight * 35;
 
-    // Adjust for activity level
-    baseIntake *= activityLevel.hydrationFactor;
-
-    // Adjust for temperature (increase intake by 10% for every 5°C above 25°C)
-    if (temperatureCelsius > 25.0) {
-      final temperatureFactor =
-          1.0 + (0.1 * ((temperatureCelsius - 25.0) / 5.0));
+    // Adjust for activity level and temperature
+    baseIntake *= activityLevel.getHydrationFactor(temperatureCelsius);
       baseIntake *= temperatureFactor;
     }
 
@@ -145,7 +140,7 @@ class UserProfile {
   }
 
   /// Create a UserProfile from a map (JSON deserialization)
-  factory UserProfile.fromJson(Map<String, dynamic> json) {
+  UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
       id: json['id'] as String,
       displayName: json['displayName'] as String,
