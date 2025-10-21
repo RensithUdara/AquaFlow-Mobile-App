@@ -103,8 +103,6 @@ class UserProfile {
 
     // Adjust for activity level and temperature
     baseIntake *= activityLevel.getHydrationFactor(temperatureCelsius);
-      baseIntake *= temperatureFactor;
-    }
 
     return baseIntake.round();
   }
