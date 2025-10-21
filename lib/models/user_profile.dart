@@ -1,25 +1,32 @@
 /// Enum to represent user activity levels
 enum ActivityLevel {
-  sedentary,
-  lightlyActive,
-  moderatelyActive,
-  veryActive,
-  extraActive;
+  sedentary(baseFactor: 1.0, extraHeatFactor: 0.1),
+  lightlyActive(baseFactor: 1.2, extraHeatFactor: 0.15),
+  moderatelyActive(baseFactor: 1.4, extraHeatFactor: 0.2),
+  veryActive(baseFactor: 1.6, extraHeatFactor: 0.25),
+  extraActive(baseFactor: 1.8, extraHeatFactor: 0.3);
 
-  /// Get activity level factor for hydration calculation
-  double get hydrationFactor {
-    switch (this) {
-      case ActivityLevel.sedentary:
-        return 1.0;
-      case ActivityLevel.lightlyActive:
-        return 1.2;
-      case ActivityLevel.moderatelyActive:
-        return 1.4;
-      case ActivityLevel.veryActive:
-        return 1.6;
-      case ActivityLevel.extraActive:
-        return 1.8;
+  const ActivityLevel({
+    required this.baseFactor,
+    required this.extraHeatFactor,
+  });
+
+  final double baseFactor;
+  final double extraHeatFactor;
+
+  /// Get activity level factor for hydration calculation considering temperature
+  double getHydrationFactor(double temperatureCelsius) {
+    // Base hydration factor
+    double factor = baseFactor;
+    
+    // Add extra hydration need for high temperatures (above 25°C)
+    if (temperatureCelsius > 25) {
+      // Calculate additional factor based on how much above 25°C
+      double tempDiff = temperatureCelsius - 25;
+      factor += (extraHeatFactor * tempDiff / 10); // Gradual increase with temperature
     }
+    
+    return factor;
   }
 }
 
