@@ -28,11 +28,13 @@ class AppConstants {
       'Notifications to remind you to drink water';
 
   // Achievement Thresholds
-  static const int streakAchievementDays = 7;
-  static const int bronzeStreakDays = 7;
-  static const int silverStreakDays = 14;
-  static const int goldStreakDays = 30;
-  static const int platinumStreakDays = 90;
+  static const int bronzeStreakDays = 7;     // Week streak
+  static const int silverStreakDays = 14;    // Two-week streak
+  static const int goldStreakDays = 30;      // Month streak
+  static const int platinumStreakDays = 90;  // Three-month streak
+
+  // Streak Milestones
+  static const List<int> streakMilestones = [7, 14, 30, 60, 90, 180, 365];
 
   // Hydration Factors
   static const double baseTemperature = 25.0; // Base temperature in Celsius
