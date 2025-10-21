@@ -58,6 +58,9 @@ class UserProfile {
   /// Longest streak achieved
   final int longestStreak;
 
+  /// Total number of daily goals achieved
+  final int totalGoalsAchieved;
+
   /// Total days where goal was achieved
   final int totalGoalsAchieved;
 
