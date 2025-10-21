@@ -34,6 +34,19 @@ enum ActivityLevel {
 
 /// Model for representing user profile information
 class UserProfile {
+  /// Constructor for UserProfile
+  const UserProfile({
+    required this.id,
+    required this.displayName,
+    required this.dailyGoal,
+    required this.weight,
+    required this.activityLevel,
+    required this.notificationsEnabled,
+    this.currentStreak = 0,
+    this.longestStreak = 0,
+    this.totalGoalsAchieved = 0,
+  });
+
   /// Unique identifier for the user
   final String id;
 
@@ -57,6 +70,12 @@ class UserProfile {
 
   /// Longest streak achieved
   final int longestStreak;
+
+  /// Total number of daily goals achieved
+  final int totalGoalsAchieved;
+
+  /// Total number of daily goals achieved
+  final int totalGoalsAchieved;
 
   /// Total days where goal was achieved
   final int totalGoalsAchieved;
