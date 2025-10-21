@@ -18,14 +18,16 @@ enum ActivityLevel {
   double getHydrationFactor(double temperatureCelsius) {
     // Base hydration factor
     double factor = baseFactor;
-    
+
     // Add extra hydration need for high temperatures (above 25°C)
     if (temperatureCelsius > 25) {
       // Calculate additional factor based on how much above 25°C
       double tempDiff = temperatureCelsius - 25;
-      factor += (extraHeatFactor * tempDiff / 10); // Gradual increase with temperature
+      factor += (extraHeatFactor *
+          tempDiff /
+          10); // Gradual increase with temperature
     }
-    
+
     return factor;
   }
 }
